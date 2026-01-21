@@ -37,7 +37,7 @@
 
 {#if !showCheckout}
   <!-- Landing Page -->
-  <Header onStartCheckout={startCheckout} />
+  <!-- <Header onStartCheckout={startCheckout} /> -->
   <Hero onStartCheckout={startCheckout} />
   <Benefits />
   <HowItWorks onStartCheckout={startCheckout} />

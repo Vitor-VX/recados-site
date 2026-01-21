@@ -7,112 +7,154 @@
 <section class="hero">
   <div class="container">
     <div class="hero-content">
+      <div class="badge">Eternize seu sentimento</div>
+
       <h1 class="hero-title">
         <span class="title-icon">
-          <Heart size={32} fill="currentColor" />
+          <Heart size={40} fill="currentColor" />
         </span>
-        Mensagem Especial do Amor
+        Sua Certidão de Namoro
+        <span class="title-icon">
+          <Heart size={40} fill="currentColor" />
+        </span>
       </h1>
 
       <p class="hero-subtitle">
-        Surpreenda quem você ama com uma certidão do amor personalizada, feita
-        para eternizar o nome do casal e registrar esse sentimento único.
+        Transforme sua história em um documento oficial do coração. Um presente
+        único, emocionante e eterno para o seu grande amor.
       </p>
 
       <div class="video-preview">
-        <div class="video-thumbnail pulse">
-          <!-- <div class="play-button">
-            <Play size={48} fill="white" color="white" />
-          </div> -->
-          <img
-            src="https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif"
-            alt="Prévia do vídeo personalizado"
-          />
+        <div class="video-frame">
+          <div class="video-thumbnail pulse">
+            <img
+              src="https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif"
+              alt="Prévia da Certidão"
+            />
+          </div>
         </div>
       </div>
 
       <div class="cta-section">
-        <button class="btn btn-secondary btn-large" on:click={onStartCheckout}>
-          Criar minha certidão
+        <button class="btn btn-primary btn-large" on:click={onStartCheckout}>
+          <HandHeart size={20} />
+          Criar Nossa Certidão Agora
         </button>
-        <p class="price-info">
-          A partir de <span class="price">R$ 14,90</span>
-        </p>
+        <div class="price-container">
+          <p class="price-info">
+            Por apenas <span class="price-old">R$ 29,90</span> por apenas
+            <span class="price">R$ 14,90</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .pulse {
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-
-    50% {
-      transform: scale(1.05);
-      opacity: 0.85;
-    }
-
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
+  @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
   .hero {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    color: #2d3748;
-    padding: 80px 0;
+    background: linear-gradient(180deg, #fff5f5 0%, #fff 100%);
+    color: #4a0e0e;
+    padding: 60px 0 100px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "❤";
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    font-size: 2rem;
+    color: #ffccd5;
+    opacity: 0.5;
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: "❤";
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    font-size: 2.5rem;
+    color: #ffccd5;
+    opacity: 0.5;
+    animation: floating 4s ease-in-out infinite;
+  }
+
+  @keyframes floating {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .badge {
+    background: #ffe3e3;
+    color: #e63946;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #ffb5a7;
   }
 
   .hero-title {
-    color: #1a202c;
-    font-size: 3rem;
+    font-family: "Great Vibes", cursive;
+    color: #c9184a;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
     margin-bottom: 24px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: 12px;
+    line-height: 1.1;
   }
 
   .title-icon {
-    color: #3b82f6;
+    color: #ff4d6d;
+    display: flex;
+    align-items: center;
   }
 
   .hero-subtitle {
-    font-size: 1.3rem;
-    color: #4a5568;
-    max-width: 700px;
+    font-size: 1.25rem;
+    color: #8d5b5b;
+    max-width: 650px;
     margin: 0 auto 48px;
     line-height: 1.6;
   }
 
-  .video-preview {
+  .video-frame {
+    display: inline-block;
+    padding: 12px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(230, 57, 70, 0.15);
     margin-bottom: 48px;
   }
 
   .video-thumbnail {
     position: relative;
-    max-width: 300px;
+    max-width: 280px;
     margin: 0 auto;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: transform 0.3s ease;
     aspect-ratio: 9/16;
-  }
-
-  .video-thumbnail:hover {
-    transform: scale(1.05);
+    border: 2px solid #fff5f5;
   }
 
   .video-thumbnail img {
@@ -121,61 +163,88 @@
     object-fit: cover;
   }
 
-  .play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    padding: 20px;
-    transition: all 0.3s ease;
+  .pulse {
+    animation: pulse 2s infinite;
   }
 
-  .play-button:hover {
-    background: rgba(0, 0, 0, 0.8);
-    transform: translate(-50%, -50%) scale(1.1);
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 20px rgba(230, 57, 70, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+    }
   }
 
   .btn-large {
-    padding: 18px 36px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 16px;
+    padding: 20px 40px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%);
+    box-shadow: 0 10px 25px rgba(201, 24, 74, 0.3);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-large:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(201, 24, 74, 0.4);
+  }
+
+  .price-container {
+    margin-top: 20px;
   }
 
   .price-info {
     font-size: 1.1rem;
-    color: #4a5568;
+    color: #8d5b5b;
+  }
+
+  .price-old {
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-size: 1rem;
+    margin: 0 5px;
   }
 
   .price {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #10b981;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #c9184a;
+    display: block;
+    margin-top: 5px;
   }
 
   @media (max-width: 768px) {
     .hero {
-      padding: 60px 0;
+      padding: 40px 0 60px 0;
     }
-
     .hero-title {
-      font-size: 2.2rem;
+      flex-direction: column;
+      gap: 0;
     }
-
+    .title-icon {
+      display: none;
+    }
     .hero-subtitle {
       font-size: 1.1rem;
-      margin-bottom: 32px;
+      padding: 0 10px;
     }
-
-    .video-thumbnail img {
-      height: 100%;
+    .video-thumbnail {
+      max-width: 240px;
     }
-
     .btn-large {
-      padding: 16px 24px;
+      width: 90%;
       font-size: 1.1rem;
+      padding: 16px;
     }
   }
 </style>
