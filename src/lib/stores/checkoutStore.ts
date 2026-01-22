@@ -55,7 +55,7 @@ const initialState: CheckoutState = {
   totalAmount: 0,
   paymentStatus: 'pending',
   pixCode: '',
-  pixQrCode: ''
+  pixQrCode: "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Example"
 };
 
 export const checkoutStore = writable<CheckoutState>(initialState);
@@ -157,14 +157,6 @@ export const products: Product[] = [
     price: 34.90,
     oldPrice: 69.90,
     quantity: 3
-  },
-  {
-    id: '4',
-    name: '4 pessoas',
-    description: '4 certidões personalizadas (podem ser para casais diferentes)',
-    price: 44.90,
-    oldPrice: 89.90,
-    quantity: 4
   }
 ];
 
@@ -178,7 +170,6 @@ export const extras: Extra[] = [
   }
 ];
 
-// Initialize extras in store
 checkoutStore.update(state => ({
   ...state,
   selectedExtras: [...extras]
