@@ -16,7 +16,7 @@
     setPaymentStatus,
     setPixData,
   } from "$lib/stores/checkoutStore";
-  import { ordersStore } from "$lib/stores/ordersStore";
+  import { track } from "$lib/track/meta";
 
   export let onComplete: () => void;
 
@@ -74,7 +74,7 @@
       couple: el.name,
       startDate: el.startDate,
       city: el.city,
-      photo: el.photo
+      photo: el.photo,
     }));
 
     const request = await fetch(
@@ -124,6 +124,9 @@
     if (data.data.status === "approved") {
       stopPaymentWatcher();
       handleSuccessfulPayment();
+      track("purchase", {
+        value: totalAmount,
+      });
     }
   }
 

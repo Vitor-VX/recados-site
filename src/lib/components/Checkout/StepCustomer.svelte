@@ -17,6 +17,7 @@
     updateCustomerData,
     updatePersonData,
   } from "$lib/stores/checkoutStore";
+    import { track } from "$lib/track/meta";
 
   export let onNext: () => void;
 
@@ -80,6 +81,8 @@
       cpf: onlyNumbers(customerData.cpf),
       whatsapp: onlyNumbers(customerData.whatsapp),
     };
+
+    track("initiate_checkout", { value: totalAmount });
 
     updateCustomerData(sanitizedCustomer);
     onNext();

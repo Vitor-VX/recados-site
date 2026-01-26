@@ -14,15 +14,20 @@
     setCurrentStep,
     resetCheckout,
   } from "$lib/stores/checkoutStore";
-  import CertificateCanvas from "$lib/components/CertificateCanvas.svelte";
+  import { track } from "$lib/track/meta";
 
   let showCheckout = false;
+  let viewContentTracked = false;
 
   $: ({ currentStep } = $checkoutStore);
 
   function startCheckout() {
     showCheckout = true;
     setCurrentStep(0);
+
+    if (!viewContentTracked && typeof fbq !== "undefined") {
+      track("view_content");
+    }
   }
 
   function nextStep() {
@@ -33,19 +38,58 @@
     showCheckout = false;
     resetCheckout();
   }
+
+  $: if (currentStep === 2) {
+    track("add_to_cart", { value: 4.9 });
+  }
 </script>
 
 <svelte:head>
-  <title>Recado Especial do Papai Noel - Vídeos Personalizados</title>
+  <title>Certificado do Amor – Presente Personalizado Digital</title>
   <meta
     name="description"
-    content="Surpreenda quem você ama com um vídeo personalizado do Papai Noel. O personagem chama pelo nome e fala diretamente com a pessoa. A partir de R$ 9,90."
+    content="Surpreenda quem você ama com um Certificado do Amor personalizado. Um presente simbólico para celebrar histórias especiais, datas importantes e momentos únicos."
   />
+
+  <script>
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(
+      window,
+      document,
+      "script",
+      "https://connect.facebook.net/en_US/fbevents.js",
+    );
+    fbq("init", "1248685190502516");
+    fbq("track", "PageView");
+  </script>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display:none"
+      src="https://www.facebook.com/tr?id=1248685190502516&ev=PageView&noscript=1"
+    />
+  </noscript>
 </svelte:head>
 
 {#if !showCheckout}
-  <!-- Landing Page -->
-  <!-- <Header onStartCheckout={startCheckout} /> -->
   <Hero onStartCheckout={startCheckout} />
   <Benefits />
   <HowItWorks onStartCheckout={startCheckout} />
