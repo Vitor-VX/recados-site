@@ -106,6 +106,7 @@
       const fullLocation = `${sanitizeString(p.cityName)} - ${p.stateName.toUpperCase().trim()}`;
 
       updatePersonData(index, {
+        ...p,
         name: fullName,
         city: fullLocation,
         startDate: formatDisplayDate(p.startDate),
