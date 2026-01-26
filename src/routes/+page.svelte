@@ -14,6 +14,7 @@
     setCurrentStep,
     resetCheckout,
   } from "$lib/stores/checkoutStore";
+  import CertificateCanvas from "$lib/components/CertificateCanvas.svelte";
 
   let showCheckout = false;
 
@@ -38,7 +39,7 @@
   <title>Recado Especial do Papai Noel - Vídeos Personalizados</title>
   <meta
     name="description"
-    content="Surpreenda quem você ama com um vídeo personalizado do Papai Noel. O personagem chama pelo nome e fala diretamente com a pessoa. A partir de R$ 14,90."
+    content="Surpreenda quem você ama com um vídeo personalizado do Papai Noel. O personagem chama pelo nome e fala diretamente com a pessoa. A partir de R$ 9,90."
   />
 </svelte:head>
 

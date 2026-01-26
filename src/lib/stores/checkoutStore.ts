@@ -19,7 +19,9 @@ export interface Extra {
 
 export interface PersonData {
   name: string;
-  message?: string;
+  startDate: string;
+  city: string;
+  photo?: string;
 }
 
 export interface CustomerData {
@@ -70,7 +72,7 @@ export const setCurrentStep = (step: number) => {
 
 export const selectProduct = (product: Product) => {
   checkoutStore.update(state => {
-    const people = Array.from({ length: product.quantity }, () => ({ name: '', message: '' }));
+    const people = Array.from({ length: product.quantity }, () => ({ name: '', startDate: '', city: '' }));
     return {
       ...state,
       selectedProduct: product,
@@ -82,13 +84,13 @@ export const selectProduct = (product: Product) => {
 
 export const toggleExtra = (extraId: string) => {
   checkoutStore.update(state => {
-    const updatedExtras = state.selectedExtras.map(extra => 
+    const updatedExtras = state.selectedExtras.map(extra =>
       extra.id === extraId ? { ...extra, selected: !extra.selected } : extra
     );
-    
+
     const extrasTotal = updatedExtras.reduce((sum, extra) => sum + (extra.selected ? extra.price : 0), 0);
     const productPrice = state.selectedProduct?.price || 0;
-    
+
     return {
       ...state,
       selectedExtras: updatedExtras,
@@ -100,7 +102,7 @@ export const toggleExtra = (extraId: string) => {
 export const updatePersonData = (index: number, personData: PersonData) => {
   checkoutStore.update(state => ({
     ...state,
-    people: state.people.map((person, i) => 
+    people: state.people.map((person, i) =>
       i === index ? personData : person
     )
   }));
@@ -138,34 +140,41 @@ export const products: Product[] = [
     id: '1',
     name: '1 pessoa',
     description: '1 certidão do amor personalizada',
-    price: 14.90,
-    oldPrice: 29.90,
+    price: 9.90,
+    oldPrice: 14.90,
     quantity: 1
   },
-  {
-    id: '2',
-    name: '2 pessoas',
-    description: '2 certidões personalizadas (podem ser para casais diferentes)',
-    price: 24.90,
-    oldPrice: 49.90,
-    quantity: 2
-  },
-  {
-    id: '3',
-    name: '3 pessoas',
-    description: '3 certidões personalizadas (podem ser para casais diferentes)',
-    price: 34.90,
-    oldPrice: 69.90,
-    quantity: 3
-  }
+  // {
+  //   id: '2',
+  //   name: '2 pessoas',
+  //   description: '2 certidões personalizadas (podem ser para casais diferentes)',
+  //   price: 24.90,
+  //   oldPrice: 49.90,
+  //   quantity: 2
+  // },
+  // {
+  //   id: '3',
+  //   name: '3 pessoas',
+  //   description: '3 certidões personalizadas (podem ser para casais diferentes)',
+  //   price: 34.90,
+  //   oldPrice: 69.90,
+  //   quantity: 3
+  // }
 ];
 
 export const extras: Extra[] = [
   {
-    id: 'fast',
+    id: 'fast_delivery',
     name: 'Entrega super rápida',
     description: 'Receba em até 2 minutos',
-    price: 5.90,
+    price: 2.90,
+    selected: false
+  },
+  {
+    id: 'with_photo',
+    name: 'Certificado do Amor Premium (2 em 1)',
+    description: 'Receba o certificado com foto do casal e também a versão sem foto.',
+    price: 4.90,
     selected: false
   }
 ];

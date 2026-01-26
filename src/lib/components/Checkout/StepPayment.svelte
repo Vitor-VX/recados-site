@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import {
     Copy,
     CircleCheck as CheckCircle,
@@ -22,8 +22,7 @@
 
   let isGeneratingCertificate = false;
   let certificateReady = false;
-  let certificateUrl =
-    "https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif"; // Mock da imagem gerada
+  let certificateUrl = "";
 
   $: ({
     selectedProduct,
@@ -38,66 +37,262 @@
 
   let copySuccess = false;
 
+  let paymentInterval: any = null;
+
+  function startPaymentWatcher() {
+    if (paymentInterval) return;
+
+    paymentInterval = setInterval(async () => {
+      await checkPayment();
+    }, 20000);
+  }
+
+  function stopPaymentWatcher() {
+    if (paymentInterval) {
+      clearInterval(paymentInterval);
+      paymentInterval = null;
+      localStorage.removeItem("order-payment");
+    }
+  }
+
   onMount(() => {
     generatePixPayment();
+    startPaymentWatcher();
+  });
+
+  onDestroy(() => {
+    stopPaymentWatcher();
   });
 
   async function generatePixPayment() {
     setPaymentStatus("generating");
 
-    setTimeout(() => {
-      const mockPixCode = `00020126580014BR.GOV.BCB.PIX013654321234-5678-90ab-cdef-123456789abc5204000053039865802BR5913CERTIDAO AMOR6009SAO PAULO62070503***6304${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-      const mockQrCode =
-        "data:image/svg+xml;base64," +
-        btoa(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-          <rect width="200" height="200" fill="white"/>
-          <path d="M50 50 L150 50 L150 150 L50 150 Z" fill="none" stroke="#e63946" stroke-width="2"/>
-          <path d="M100 80 Q100 70 110 70 T120 80 T100 100 T80 80 T90 70 T100 80" fill="#e63946"/>
-          <text x="100" y="140" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#4a0e0e">PIX ROMÂNTICO</text>
-        </svg>
-      `);
+    const upsell = selectedExtras
+      .filter((el) => el.selected)
+      .map((el) => el.id);
+    const certificates = people.map((el) => ({
+      couple: el.name,
+      startDate: el.startDate,
+      city: el.city,
+      photo: el.photo
+    }));
 
-      setPixData(mockPixCode, mockQrCode);
-      setPaymentStatus("waiting");
+    const request = await fetch(
+      "https://vxsoftware.space/api/v1/offers/certificate/orders/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product: {
+            plan: "single",
+            extras: upsell,
+            certificates,
+          },
+          name: customerData.name,
+          whatsapp: customerData.whatsapp,
+          cpf: customerData.cpf,
+          email: customerData.email,
+        }),
+      },
+    );
 
-      setTimeout(() => {
-        handleSuccessfulPayment();
-      }, 8000);
-    }, 2000);
+    const response = await request.json();
+    const { payment, token } = response.data;
+    const { qrCode, qrCodeBase64 } = payment;
+
+    setPixData(qrCode, `data:imagepng;base64,${qrCodeBase64}`);
+    setPaymentStatus("waiting");
+    localStorage.setItem("order-payment", token);
   }
 
-  function handleSuccessfulPayment() {
+  async function checkPayment() {
+    const token = localStorage.getItem("order-payment");
+    if (!token) return;
+
+    const res = await fetch(
+      "https://vxsoftware.space/api/v1/offers/certificate/orders/current",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await res.json();
+    if (data.data.status === "approved") {
+      stopPaymentWatcher();
+      handleSuccessfulPayment();
+    }
+  }
+
+  let canvas: HTMLCanvasElement;
+  let ctx: CanvasRenderingContext2D;
+
+  const W = 1080;
+  const H = 1920;
+
+  async function draw(
+    couple: string,
+    date: string,
+    city: string,
+    ass: { one: string; two: string },
+    couplePhoto: string | null,
+  ) {
+    ctx = canvas.getContext("2d")!;
+
+    canvas.width = W;
+    canvas.height = H;
+
+    await document.fonts.load('40px "Breathing"');
+    await document.fonts.load('33px "Breathing"');
+    await document.fonts.ready;
+
+    const bg = new Image();
+    bg.src = couplePhoto ? "/input2.png" : "/input.png";
+    await bg.decode();
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(bg, 0, 0, W, H);
+
+    if (selectedExtras.find((el) => el.id === "with_photo" && el.selected)) {
+      if (couplePhoto) {
+        const photoConfig = {
+          x: 130,
+          y: 640,
+          w: 300,
+          h: 350,
+          radius: 24,
+        };
+
+        const img = new Image();
+        img.src = couplePhoto;
+        await img.decode();
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.roundRect(
+          photoConfig.x,
+          photoConfig.y,
+          photoConfig.w,
+          photoConfig.h,
+          photoConfig.radius,
+        );
+        ctx.clip();
+
+        const imgRatio = img.width / img.height;
+        const canvasRatio = photoConfig.w / photoConfig.h;
+        let drawX, drawY, drawW, drawH;
+
+        if (imgRatio > canvasRatio) {
+          drawH = photoConfig.h;
+          drawW = img.width * (photoConfig.h / img.height);
+          drawX = photoConfig.x + (photoConfig.w - drawW) / 2;
+          drawY = photoConfig.y;
+        } else {
+          drawW = photoConfig.w;
+          drawH = img.height * (photoConfig.w / img.width);
+          drawX = photoConfig.x;
+          drawY = photoConfig.y + (photoConfig.h - drawH) / 2;
+        }
+
+        ctx.drawImage(img, drawX, drawY, drawW, drawH);
+        ctx.restore();
+
+        ctx.fillStyle = "#393939";
+        ctx.textAlign = "center";
+
+        ctx.font = '25px "Breathing"';
+        ctx.fillText(couple, 820, 785);
+
+        ctx.font = '25px "Breathing"';
+        ctx.fillText(date, 860, 855);
+
+        ctx.font = '25px "Breathing"';
+        ctx.fillText(city, 825, 925);
+
+        ctx.font = '33px "Breathing"';
+        ctx.fillText(ass.one, 298, 1550);
+
+        ctx.font = '33px "Breathing"';
+        ctx.fillText(ass.two, 800, 1550);
+      }
+
+      ctx.fillStyle = "#393939";
+      ctx.textAlign = "center";
+
+      ctx.font = '25px "Breathing"';
+      ctx.fillText(couple, 820, 785);
+
+      ctx.font = '25px "Breathing"';
+      ctx.fillText(date, 860, 855);
+
+      ctx.font = '25px "Breathing"';
+      ctx.fillText(city, 825, 925);
+
+      ctx.font = '33px "Breathing"';
+      ctx.fillText(ass.one, 298, 1550);
+
+      ctx.font = '33px "Breathing"';
+      ctx.fillText(ass.two, 800, 1550);
+
+      certificateUrl = getBase64();
+      return;
+    }
+
+    ctx.fillStyle = "#393939";
+    ctx.textAlign = "center";
+
+    ctx.font = '40px "Breathing"';
+    ctx.fillText(couple, 620, 775);
+
+    ctx.font = '33px "Breathing"';
+    ctx.fillText(date, 680, 835);
+
+    ctx.font = '33px "Breathing"';
+    ctx.fillText(city, 580, 905);
+
+    ctx.font = '33px "Breathing"';
+    ctx.fillText(ass.one, 298, 1515);
+
+    ctx.font = '33px "Breathing"';
+    ctx.fillText(ass.two, 775, 1515);
+
+    certificateUrl = getBase64();
+  }
+
+  function getBase64(): string {
+    return canvas.toDataURL("image/png");
+  }
+
+  async function handleSuccessfulPayment() {
     setPaymentStatus("paid");
     isGeneratingCertificate = true;
 
-    const selectedExtrasFiltered = selectedExtras.filter((e) => e.selected);
-    ordersStore.update((orders) => [
-      {
-        id: `ord-${Date.now()}`,
-        customerName: customerData.name,
-        customerWhatsapp: customerData.whatsapp,
-        customerEmail: customerData.email,
-        customerCpf: customerData.cpf,
-        productName: selectedProduct?.name || "",
-        quantity: selectedProduct?.quantity || 0,
-        people: people,
-        extras: selectedExtrasFiltered.map((e) => ({
-          name: e.name,
-          price: e.price,
-        })),
-        totalAmount: totalAmount,
-        status: "paid",
-        createdAt: new Date(),
-        paidAt: new Date(),
-      },
-      ...orders,
-    ]);
+    const { name, startDate, city, photo } = people[0];
+    const names = name
+      .split(/\s+(?:e|&{1,2}|\+|\|)\s+/i)
+      .map((n) => n.trim())
+      .filter(Boolean);
 
-    setTimeout(() => {
-      isGeneratingCertificate = false;
-      certificateReady = true;
-    }, 4000);
+    const one = names[0] ?? "";
+    const two = names[1] ?? "";
+
+    await draw(
+      name,
+      startDate,
+      city,
+      {
+        one,
+        two,
+      },
+      photo,
+    );
+
+    isGeneratingCertificate = false;
+    certificateReady = true;
   }
 
   function copyPixCode() {
@@ -116,6 +311,8 @@
     document.body.removeChild(link);
   }
 </script>
+
+<canvas bind:this={canvas} width="1080" height="1920" style="display: none" />
 
 <div class="step-payment">
   <div class="content-wrapper">
@@ -149,12 +346,7 @@
               <Sparkles size={14} />
               Pix Instantâneo
             </div>
-            <!-- <img src={pixQrCode} alt="QR Code PIX" class="qr-code" /> -->
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Example"
-              alt="QR Code Example"
-              class="qr-code"
-            />
+            <img src={pixQrCode} alt="QR Code PIX" class="qr-code" />
 
             <div class="pix-code-section">
               <label>Pix Copia e Cola</label>
@@ -252,7 +444,7 @@
           <div class="email-notice mt-4">
             <p>
               <Sparkles size={14} /> Também enviamos uma cópia para
-              <strong>{customerData.email}</strong>
+              <strong>{customerData.whatsapp}</strong>
             </p>
           </div>
         </div>

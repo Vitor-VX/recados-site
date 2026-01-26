@@ -8,9 +8,12 @@
     Calendar,
     MapPin,
     Check,
+    Camera,
+    ImageIcon,
   } from "lucide-svelte";
   import {
     checkoutStore,
+    selectProduct,
     updateCustomerData,
     updatePersonData,
   } from "$lib/stores/checkoutStore";
@@ -34,14 +37,51 @@
     updatePersonData(index, updatedPerson);
   }
 
+  function onlyNumbers(value: string) {
+    return value.replace(/\D/g, "");
+  }
+
   function handleSubmit() {
+    if (
+      !customerData.cpf ||
+      !customerData.email ||
+      !customerData.name ||
+      !customerData.whatsapp
+    ) {
+      alert("Por favor, todos os campos são necessários.");
+      return;
+    }
+
+    const withPhoto = selectedExtras.some(
+      (el) => el.id === "with_photo" && el.selected,
+    );
+
+    const checkPeople = people.some(
+      (p) =>
+        !p.city?.trim() ||
+        !p.name?.trim() ||
+        !p.startDate?.trim() ||
+        (withPhoto && !p.photo),
+    );
+
+    if (checkPeople) {
+      alert("Preencha os dados do casal.");
+      return;
+    }
+
     if (!confirmWhatsapp) {
       alert(
         "Por favor, confirme que seu WhatsApp está correto para receber a certidão.",
       );
       return;
     }
-    updateCustomerData(customerData);
+    const sanitizedCustomer = {
+      ...customerData,
+      cpf: onlyNumbers(customerData.cpf),
+      whatsapp: onlyNumbers(customerData.whatsapp),
+    };
+
+    updateCustomerData(sanitizedCustomer);
     onNext();
   }
 
@@ -59,6 +99,17 @@
       .replace(/\D/g, "")
       .replace(/(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d{4})/, "$1-$2");
+  }
+
+  function handleFileUpload(index: number, e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        handlePersonUpdate(index, "photo", event.target?.result);
+      };
+      reader.readAsDataURL(target.files[0]);
+    }
   }
 </script>
 
@@ -104,9 +155,10 @@
                 </label>
                 <input
                   type="text"
+                  value={person.startDate}
                   placeholder="08/12/2023"
                   on:input={(e) =>
-                    handlePersonUpdate(index, "date", e.target.value)}
+                    handlePersonUpdate(index, "startDate", e.target.value)}
                   required
                 />
               </div>
@@ -118,12 +170,41 @@
                 </label>
                 <input
                   type="text"
+                  value={person.city}
                   placeholder="São Paulo - SP"
                   on:input={(e) =>
-                    handlePersonUpdate(index, "location", e.target.value)}
+                    handlePersonUpdate(index, "city", e.target.value)}
                   required
                 />
               </div>
+
+              {#if selectedExtras.find((el) => el.id === "with_photo" && el.selected)}
+                <div class="form-group upload-group">
+                  <label> <Camera size={18} /> Foto do Casal</label>
+                  <div class="photo-upload-container">
+                    {#if person.photo}
+                      <div class="photo-preview">
+                        <img src={person.photo} alt="Preview" />
+                        <button
+                          class="remove-photo"
+                          on:click={() =>
+                            handlePersonUpdate(index, "photo", null)}>×</button
+                        >
+                      </div>
+                    {:else}
+                      <label class="file-input-label">
+                        <ImageIcon size={32} />
+                        <span>Clique para enviar a foto</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          on:change={(e) => handleFileUpload(index, e)}
+                        />
+                      </label>
+                    {/if}
+                  </div>
+                </div>
+              {/if}
             </div>
           </div>
         {/each}
@@ -477,5 +558,55 @@
     .form-row {
       grid-template-columns: 1fr;
     }
+  }
+
+  .photo-upload-container {
+    margin-top: 10px;
+  }
+  .file-input-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border: 2px dashed #ffccd5;
+    border-radius: 15px;
+    background: white;
+    cursor: pointer;
+    color: #ff4d6d;
+    transition: all 0.3s;
+  }
+  .file-input-label:hover {
+    background: #fff0f3;
+    border-color: #ff4d6d;
+  }
+  .file-input-label input {
+    display: none;
+  }
+  .photo-preview {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  .photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .remove-photo {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #c9184a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
   }
 </style>

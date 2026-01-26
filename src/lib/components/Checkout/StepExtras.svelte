@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Zap } from "lucide-svelte";
   import { checkoutStore, toggleExtra } from "$lib/stores/checkoutStore";
 
   export let onNext: () => void;
@@ -17,14 +16,6 @@
     {#each selectedExtras as extra}
       <div class="extra-card card">
         <div class="extra-content">
-          <div class="extra-icon">
-            <Zap
-              size={24}
-              fill="#ffffff"
-              color={extra.selected ? "#ffffff" : "#c9184a"}
-            />
-          </div>
-
           <div class="extra-info">
             <h3>{extra.name}</h3>
             <p>{extra.description}</p>
