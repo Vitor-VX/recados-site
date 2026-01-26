@@ -485,6 +485,12 @@
 </div>
 
 <style>
+  @font-face {
+    font-family: "Breathing";
+    src: url("/breathing.ttf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+  }
   .step-payment {
     max-width: 1000px;
     margin: 0 auto;

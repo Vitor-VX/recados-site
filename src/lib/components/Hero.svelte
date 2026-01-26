@@ -1,7 +1,30 @@
 <script lang="ts">
   import { HandHeart, Heart, Play } from "lucide-svelte";
+  import { onMount } from "svelte";
 
   export let onStartCheckout: () => void;
+
+  const carrosel = [
+    "https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif",
+    "https://files.botsync.site/CertPreview2.png",
+  ];
+
+  let current = 0;
+  let interval: any;
+
+  function next() {
+    current = (current + 1) % carrosel.length;
+  }
+
+  function prev() {
+    current = (current - 1 + carrosel.length) % carrosel.length;
+  }
+
+  onMount(() => {
+    interval = setInterval(next, 3500);
+
+    return () => clearInterval(interval);
+  });
 </script>
 
 <section class="hero">
@@ -26,11 +49,23 @@
 
       <div class="video-preview">
         <div class="video-frame">
-          <div class="video-thumbnail pulse">
-            <img
-              src="https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif"
-              alt="Prévia da Certidão"
-            />
+          <div class="video-thumbnail carousel">
+            {#each carrosel as image, i}
+              <img
+                src={image}
+                alt="Prévia da Certidão"
+                class:active={i === current}
+              />
+            {/each}
+
+            <div class="dots">
+              {#each carrosel as _, i}
+                <span
+                  class:active={i === current}
+                  on:click={() => (current = i)}
+                />
+              {/each}
+            </div>
           </div>
         </div>
       </div>
@@ -42,7 +77,7 @@
         </button>
         <div class="price-container">
           <p class="price-info">
-            Por apenas <span class="price-old">R$ 14,90</span> por apenas
+            De <span class="price-old">R$ 29,90</span> por apenas
             <span class="price">R$ 9,90</span>
           </p>
         </div>
@@ -246,5 +281,52 @@
       font-size: 1.1rem;
       padding: 16px;
     }
+  }
+
+  .carousel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.05);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+
+  .carousel img.active {
+    opacity: 1;
+    transform: scale(1);
+    position: relative;
+  }
+
+  .dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+
+  .dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dots span.active {
+    background: #ff4d6d;
+    transform: scale(1.2);
   }
 </style>
