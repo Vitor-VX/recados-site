@@ -88,6 +88,20 @@
       src="https://www.facebook.com/tr?id=1248685190502516&ev=PageView&noscript=1"
     />
   </noscript>
+
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-SHQ596VRV3"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-SHQ596VRV3");
+  </script>
 </svelte:head>
 
 {#if !showCheckout}
