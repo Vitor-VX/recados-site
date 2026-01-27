@@ -1,6 +1,6 @@
 <script lang="ts">
   import "../app.css";
-  import Header from "$lib/components/Header.svelte";
+  import icon from "$lib/assets/ic_site.png";
   import Hero from "$lib/components/Hero.svelte";
   import Benefits from "$lib/components/Benefits.svelte";
   import HowItWorks from "$lib/components/HowItWorks.svelte";
@@ -50,6 +50,7 @@
     name="description"
     content="Surpreenda quem você ama com um Certificado do Amor personalizado. Um presente simbólico para celebrar histórias especiais, datas importantes e momentos únicos."
   />
+  <link rel="icon" href={icon} />
 
   <script>
     !(function (f, b, e, v, n, t, s) {
