@@ -141,7 +141,7 @@ export const products: Product[] = [
     name: '1 pessoa',
     description: '1 certidão do amor personalizada',
     price: 9.90,
-    oldPrice: 14.90,
+    oldPrice: 29.90,
     quantity: 1
   },
   // {

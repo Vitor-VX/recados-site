@@ -176,14 +176,14 @@
               <div class="form-row">
                 <input
                   type="text"
-                  placeholder="Nome do Amor 01"
+                  placeholder="Nome do Amor 1"
                   value={person.name1 || ""}
                   on:input={(e) =>
                     handlePersonUpdate(index, "name1", e.target.value)}
                 />
                 <input
                   type="text"
-                  placeholder="Nome do Amor 02"
+                  placeholder="Nome do Amor 2"
                   value={person.name2 || ""}
                   on:input={(e) =>
                     handlePersonUpdate(index, "name2", e.target.value)}

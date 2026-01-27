@@ -5,8 +5,8 @@
   export let onStartCheckout: () => void;
 
   const carrosel = [
-    "https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif",
     "https://files.botsync.site/CertPreview2.png",
+    "https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif",
   ];
 
   let current = 0;
