@@ -45,7 +45,7 @@
             onNext();
           }}
         >
-          Selecionar este
+          Selecionar esta opção.
         </button>
       </div>
     {/each}
