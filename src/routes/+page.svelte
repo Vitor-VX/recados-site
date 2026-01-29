@@ -76,7 +76,7 @@
       "script",
       "https://connect.facebook.net/en_US/fbevents.js",
     );
-    fbq("init", "1248685190502516");
+    fbq("init", "875484495259675");
     fbq("track", "PageView");
   </script>
 
@@ -85,7 +85,7 @@
       height="1"
       width="1"
       style="display:none"
-      src="https://www.facebook.com/tr?id=1248685190502516&ev=PageView&noscript=1"
+      src="https://www.facebook.com/tr?id=875484495259675&ev=PageView&noscript=1"
     />
   </noscript>
 
