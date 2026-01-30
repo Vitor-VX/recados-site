@@ -42,6 +42,12 @@
       .join(" ");
   }
 
+  function isValidBrazilWhatsapp(phone: string) {
+    const clean = onlyNumbers(phone);
+    if (clean.length !== 11) return false;
+    return /^[1-9]{2}9\d{8}$/.test(clean);
+  }
+
   function formatDisplayDate(value: string) {
     let v = value.replace(/\D/g, "").slice(0, 8);
     if (v.length >= 5) {
@@ -73,6 +79,11 @@
       !customerData.whatsapp
     ) {
       alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    if (!isValidBrazilWhatsapp(customerData.whatsapp)) {
+      alert("Digite um WhatsApp válido com DDD e número iniciando com 9.");
       return;
     }
 
