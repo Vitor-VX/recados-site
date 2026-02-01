@@ -28,7 +28,6 @@ export interface CustomerData {
   name: string;
   whatsapp: string;
   email: string;
-  cpf: string;
 }
 
 export interface CheckoutState {
@@ -52,7 +51,6 @@ const initialState: CheckoutState = {
     name: '',
     whatsapp: '',
     email: '',
-    cpf: ''
   },
   totalAmount: 0,
   paymentStatus: 'pending',

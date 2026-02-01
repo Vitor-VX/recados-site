@@ -23,8 +23,7 @@
   let customerData = {
     name: "",
     whatsapp: "",
-    email: "",
-    cpf: "",
+    email: ""
   };
 
   let confirmWhatsapp = false;
@@ -46,6 +45,11 @@
     const clean = onlyNumbers(phone);
     if (clean.length !== 11) return false;
     return /^[1-9]{2}9\d{8}$/.test(clean);
+  }
+
+  function isValidFirstName(name: string) {
+    const trimmed = name.trim();
+    return /^[A-Za-zÀ-ÿ]+$/.test(trimmed);
   }
 
   function formatDisplayDate(value: string) {
@@ -73,12 +77,22 @@
 
   function handleSubmit() {
     if (
-      !customerData.cpf ||
       !customerData.email ||
       !customerData.name ||
       !customerData.whatsapp
     ) {
       alert("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const invalidName = people.some((p) => {
+      return (
+        !isValidFirstName(p.name1 || "") || !isValidFirstName(p.name2 || "")
+      );
+    });
+
+    if (invalidName) {
+      alert("Digite apenas o primeiro nome de cada pessoa (ex: João).");
       return;
     }
 
@@ -127,7 +141,6 @@
     const sanitizedCustomer = {
       ...customerData,
       name: sanitizeString(customerData.name),
-      cpf: onlyNumbers(customerData.cpf),
       whatsapp: onlyNumbers(customerData.whatsapp),
     };
 
@@ -187,14 +200,14 @@
               <div class="form-row">
                 <input
                   type="text"
-                  placeholder="Nome do Amor 1"
+                  placeholder="exemplo: João"
                   value={person.name1 || ""}
                   on:input={(e) =>
                     handlePersonUpdate(index, "name1", e.target.value)}
                 />
                 <input
                   type="text"
-                  placeholder="Nome do Amor 2"
+                  placeholder="exemplo: Maria"
                   value={person.name2 || ""}
                   on:input={(e) =>
                     handlePersonUpdate(index, "name2", e.target.value)}
@@ -288,15 +301,6 @@
               value={customerData.whatsapp}
               on:input={(e) =>
                 (customerData.whatsapp = formatPhone(e.target.value))}
-            />
-          </div>
-          <div class="form-group">
-            <label><CreditCard size={18} /> CPF</label>
-            <input
-              type="text"
-              placeholder="000.000.000-00"
-              value={customerData.cpf}
-              on:input={(e) => (customerData.cpf = formatCPF(e.target.value))}
             />
           </div>
         </div>
