@@ -15,8 +15,8 @@
         </div>
         <h3>100% Personalizado</h3>
         <p>
-          Cada certificado é criado com o nome do casal, data especial e uma
-          mensagem exclusiva escolhida por você.
+          Cada certificado é criado com o nome do casal, a data especial e a
+          cidade/estado informados por você.
         </p>
       </div>
 

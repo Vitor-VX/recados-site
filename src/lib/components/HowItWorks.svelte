@@ -36,8 +36,8 @@
         </div>
         <h3>Personalize tudo</h3>
         <p>
-          Informe os nomes, a data do início de tudo e uma mensagem bem
-          romântica.
+          Informe o nome do casal, a data de início do relacionamento e a
+          cidade/estado onde moram.
         </p>
       </div>
 
