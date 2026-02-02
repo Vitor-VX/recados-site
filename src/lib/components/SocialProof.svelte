@@ -10,23 +10,23 @@
 
   const reviews = [
     {
-      img: "https://files.botsync.site/casais/casal_1.jpeg",
+      img: "https://files.botsync.site/casais/img_04.jpeg",
       couple: "Luan & Grazi",
       tag: "Eternizado",
     },
     {
-      img: "https://files.botsync.site/casais/casal_2.jpeg",
-      couple: "Tati & Lucas",
+      img: "https://files.botsync.site/casais/img_01.jpg",
+      couple: "Fernanda & Samuel",
       tag: "Presente Surpresa",
     },
     {
-      img: "https://files.botsync.site/casais/casal_4.png",
-      couple: "Gustavo & Ismael",
-      tag: "Presente Surpresa",
-    },
-    {
-      img: "https://files.botsync.site/casais/casal_3.jpeg",
+      img: "https://files.botsync.site/casais/img_03.jpeg",
       couple: "Gustavo & Ana",
+      tag: "Presente Surpresa",
+    },
+    {
+      img: "https://files.botsync.site/casais/img_05.jpeg",
+      couple: "Tati & Lucas",
       tag: "Pedido de Namoro",
     },
   ];
@@ -66,7 +66,7 @@
             <div class="image-container">
               <img src={review.img} alt="Certificado do casal" />
               <div class="overlay">
-                <span class="tag">{review.tag}</span>
+                <!-- <span class="tag">{review.tag}</span> -->
               </div>
             </div>
             <div class="info">
