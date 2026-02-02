@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { UserCheck, Zap, Shield } from "lucide-svelte";
+  import { UserCheck, Zap, Shield, MessageSquare } from "lucide-svelte";
 </script>
 
 <section class="benefits">
@@ -22,12 +22,12 @@
 
       <div class="benefit-card card">
         <div class="benefit-icon icon-pink">
-          <Zap size={40} />
+          <MessageSquare size={40} />
         </div>
         <h3>Entrega Instantânea</h3>
         <p>
           Receba sua certidão digital poucos minutos após a confirmação, direto
-          no seu e-mail ou WhatsApp.
+          no seu <strong>WhatsApp</strong>.
         </p>
       </div>
 

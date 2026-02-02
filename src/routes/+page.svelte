@@ -15,6 +15,7 @@
     resetCheckout,
   } from "$lib/stores/checkoutStore";
   import { track } from "$lib/track/meta";
+    import SocialProof from "$lib/components/SocialProof.svelte";
 
   let showCheckout = false;
   let viewContentTracked = false;
@@ -116,6 +117,7 @@
 
 {#if !showCheckout}
   <Hero onStartCheckout={startCheckout} />
+  <SocialProof />
   <Benefits />
   <HowItWorks onStartCheckout={startCheckout} />
 {:else}
