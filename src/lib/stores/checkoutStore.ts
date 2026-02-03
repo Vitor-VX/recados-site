@@ -136,7 +136,7 @@ export const resetCheckout = () => {
 export const products: Product[] = [
   {
     id: '1',
-    name: '1 pessoa',
+    name: '1 Casal',
     description: '1 certidão do amor personalizada',
     price: 9.90,
     oldPrice: 29.90,
@@ -164,7 +164,7 @@ export const extras: Extra[] = [
   {
     id: 'fast_delivery',
     name: 'Entrega super rápida',
-    description: 'Receba em até 2 minutos',
+    description: 'Receba em até 10 segundos',
     price: 2.90,
     selected: false
   },
