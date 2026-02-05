@@ -1,8 +1,6 @@
 <script lang="ts">
   import {
-    Heart,
     CheckCircle2,
-    MessageSquare,
     Sparkles,
     Layout,
     MousePointerClick,
@@ -63,19 +61,24 @@
           role="button"
           tabindex="0"
         >
-          <div
-            class="instruction-tap"
-            class:active-instruction={activePackage === pack.id}
-          >
-            {#if activePackage === pack.id}
-              <X size={16} />
-              <span>Toque para fechar</span>
-            {:else}
-              <MousePointerClick size={16} />
-              <span>Toque para ver os dois</span>
-            {/if}
+          <!-- UI Elements -->
+          <div class="card-ui-top">
+            <div class="badge-tag">{pack.tag}</div>
+            <div
+              class="instruction-tap"
+              class:active-instruction={activePackage === pack.id}
+            >
+              {#if activePackage === pack.id}
+                <X size={14} />
+                <span>Fechar</span>
+              {:else}
+                <MousePointerClick size={14} />
+                <span>Ver os dois</span>
+              {/if}
+            </div>
           </div>
 
+          <!-- Stack de Cartas -->
           <div class="cards-stack">
             <div class="card-item premium">
               <img src={pack.premiumImg} alt="Versão Com Foto" />
@@ -90,6 +93,7 @@
             </div>
           </div>
 
+          <!-- Informações -->
           <div class="package-info">
             <h3>{pack.name}</h3>
             <p>{pack.description}</p>
@@ -110,10 +114,9 @@
     </div>
 
     <div class="footer-stats">
-      <div class="divider-dot"></div>
       <div class="stat">
         <Layout size={20} />
-        <span>Designs exclusivos</span>
+        <span>Designs exclusivos e autorais</span>
       </div>
     </div>
   </div>
@@ -143,7 +146,7 @@
   .section-title {
     font-family: "Great Vibes", cursive;
     color: #5e0b15;
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-size: clamp(2.8rem, 8vw, 4.2rem);
     margin-bottom: 15px;
     line-height: 1;
   }
@@ -155,11 +158,12 @@
     margin: 0 auto 40px;
     line-height: 1.6;
     text-align: center;
+    padding: 0 20px;
   }
 
   .packages-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 40px;
     max-width: 1100px;
     margin: 0 auto 60px;
@@ -168,13 +172,14 @@
 
   .package-card {
     background: white;
-    border-radius: 32px;
-    padding: 60px 30px 30px; /* Padding top maior para não bater nos badges */
+    border-radius: 35px;
+    padding: 80px 25px 35px;
     border: 1px solid #feeafa;
-    box-shadow: 0 10px 30px rgba(74, 14, 14, 0.03);
+    box-shadow: 0 10px 30px rgba(74, 14, 14, 0.04);
     position: relative;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
+    overflow: hidden;
   }
 
   .package-card:hover {
@@ -182,26 +187,30 @@
     transform: translateY(-5px);
   }
 
-  /* Badge de Categoria */
-  .badge-tag {
+  .card-ui-top {
     position: absolute;
-    top: 20px;
-    left: 25px;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 40;
+  }
+
+  .badge-tag {
     background: #5e0b15;
     color: white;
-    padding: 5px 14px;
+    padding: 6px 14px;
     border-radius: 50px;
     font-size: 0.65rem;
     font-weight: 800;
     text-transform: uppercase;
-    z-index: 30; /* Acima de tudo */
+    letter-spacing: 0.5px;
   }
 
-  /* Instrução de Toque */
   .instruction-tap {
-    position: absolute;
-    top: 20px;
-    right: 25px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -212,9 +221,9 @@
     background: #fff0f3;
     padding: 6px 12px;
     border-radius: 50px;
-    z-index: 30;
     transition: 0.3s;
     border: 1px solid #ffccd5;
+    white-space: nowrap;
   }
 
   .active-instruction {
@@ -227,22 +236,23 @@
     position: relative;
     height: 320px;
     width: 100%;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1000px;
+    perspective: 1200px;
   }
 
   .card-item {
     position: absolute;
-    width: 190px;
+    width: 195px;
+    left: 50%; /* Âncora central */
     aspect-ratio: 3/4.2;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
     background: white;
     border: 3px solid white;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
@@ -259,55 +269,58 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 8px;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-align: center;
     backdrop-filter: blur(4px);
   }
 
   .label-premium {
-    background: rgba(201, 24, 74, 0.9);
+    background: rgba(201, 24, 74, 0.95);
   }
 
-  /* Posição Inicial (Sobrepostas) */
+  /* Posição Inicial (Sobrepostas e Centralizadas) */
   .premium {
-    transform: rotate(-6deg) translateX(-15px);
     z-index: 1;
     opacity: 0.5;
+    transform: translateX(-55%) rotate(-6deg);
   }
 
   .standard {
-    transform: rotate(3deg) translateX(15px);
     z-index: 2;
+    transform: translateX(-45%) rotate(3deg);
   }
 
+  /* Posição Expandida */
   .package-card.expanded .premium {
-    transform: translateX(-85px) rotate(-10deg) scale(1.05);
+    transform: translateX(calc(-50% - 85px)) rotate(-10deg) scale(1.05);
     opacity: 1;
     z-index: 10;
   }
 
   .package-card.expanded .standard {
-    transform: translateX(85px) rotate(8deg) scale(1.05);
+    transform: translateX(calc(-50% + 85px)) rotate(8deg) scale(1.05);
     opacity: 1;
     z-index: 10;
   }
 
+  /* Hover Desktop */
   @media (min-width: 1024px) {
     .package-card:hover:not(.expanded) .premium {
-      transform: translateX(-40px) rotate(-8deg);
+      transform: translateX(-65%) rotate(-8deg);
+      opacity: 0.8;
     }
     .package-card:hover:not(.expanded) .standard {
-      transform: translateX(40px) rotate(5deg);
+      transform: translateX(-35%) rotate(5deg);
     }
   }
 
   .package-info h3 {
     font-family: "Poppins", sans-serif;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: #4a0e0e;
     margin-bottom: 8px;
     font-weight: 700;
@@ -316,15 +329,17 @@
 
   .package-info p {
     color: #8d5b5b;
-    font-size: 0.9rem;
-    margin-bottom: 20px;
+    font-size: 0.95rem;
+    margin-bottom: 25px;
     text-align: center;
+    line-height: 1.5;
   }
 
   .features {
     display: flex;
     justify-content: center;
     gap: 15px;
+    flex-wrap: wrap;
   }
 
   .feature {
@@ -335,15 +350,15 @@
     color: #5e0b15;
     font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .footer-stats {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
     margin-top: 40px;
-    padding-top: 40px;
+    padding-top: 30px;
     border-top: 1px solid #ffccd5;
   }
 
@@ -353,23 +368,17 @@
     gap: 10px;
     color: #5e0b15;
     font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  .divider-dot {
-    width: 6px;
-    height: 6px;
-    background: #ffccd5;
-    border-radius: 50%;
+    font-size: 0.95rem;
   }
 
   @media (max-width: 768px) {
     .packages-grid {
+      grid-template-columns: 1fr;
       gap: 30px;
     }
 
     .package-card {
-      padding: 60px 15px 25px;
+      padding: 70px 20px 30px;
     }
 
     .cards-stack {
@@ -377,25 +386,19 @@
     }
 
     .card-item {
-      width: 145px;
+      width: 150px;
     }
 
     .package-card.expanded .premium {
-      transform: translateX(-65px) rotate(-10deg) scale(1.05);
+      transform: translateX(calc(-50% - 60px)) rotate(-8deg) scale(1.05);
     }
 
     .package-card.expanded .standard {
-      transform: translateX(65px) rotate(8deg) scale(1.05);
+      transform: translateX(calc(-50% + 60px)) rotate(6deg) scale(1.05);
     }
 
-    .footer-stats {
-      flex-direction: column;
-      gap: 15px;
-      text-align: center;
-    }
-
-    .divider-dot {
-      display: none;
+    .section-title {
+      font-size: 2.8rem;
     }
   }
 </style>
