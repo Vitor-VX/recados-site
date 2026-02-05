@@ -85,7 +85,7 @@
 
   function handleThemeSelect(index: number, theme: any) {
     updatePersonData(index, {
-      selectedTheme: theme.id
+      selectedTheme: theme.id,
     });
   }
 
@@ -124,14 +124,30 @@
       .replace(/(\d{5})(\d{4})/, "$1-$2");
   }
 
+  function isValidFirstName(name: string) {
+    const trimmed = name.trim();
+    return /^[A-Za-zÀ-ÿ]+$/.test(trimmed);
+  }
+
   function handleSubmit() {
     if (!customerData.email || !customerData.name || !customerData.whatsapp) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
+    const invalidName = people.some((p) => {
+      return (
+        !isValidFirstName(p.name1 || "") || !isValidFirstName(p.name2 || "")
+      );
+    });
+
+    if (invalidName) {
+      alert("Digite apenas o primeiro nome de cada pessoa (ex: João).");
+      return;
+    }
+
     if (!isValidBrazilWhatsapp(customerData.whatsapp)) {
-      alert("Digite um WhatsApp válido.");
+      alert("Digite um WhatsApp válido com DDD e número iniciando com 9.");
       return;
     }
 
