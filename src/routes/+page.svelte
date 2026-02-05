@@ -4,6 +4,7 @@
   import Hero from "$lib/components/Hero.svelte";
   import Benefits from "$lib/components/Benefits.svelte";
   import HowItWorks from "$lib/components/HowItWorks.svelte";
+  import Templates from "$lib/components/Templates.svelte";
   import StepIndicator from "$lib/components/Checkout/StepIndicator.svelte";
   import StepOrder from "$lib/components/Checkout/StepOrder.svelte";
   import StepExtras from "$lib/components/Checkout/StepExtras.svelte";
@@ -15,7 +16,7 @@
     resetCheckout,
   } from "$lib/stores/checkoutStore";
   import { track } from "$lib/track/meta";
-    import SocialProof from "$lib/components/SocialProof.svelte";
+  import SocialProof from "$lib/components/SocialProof.svelte";
 
   let showCheckout = false;
   let viewContentTracked = false;
@@ -118,6 +119,7 @@
 {#if !showCheckout}
   <Hero onStartCheckout={startCheckout} />
   <SocialProof />
+  <Templates />
   <Benefits />
   <HowItWorks onStartCheckout={startCheckout} />
 {:else}

@@ -6,10 +6,11 @@
     Clock,
     Heart,
     Lock,
-    Download,
     Sparkles,
-    Loader2,
-    Share2,
+    MessageSquare,
+    Mail,
+    ShieldCheck,
+    AlertCircle,
   } from "lucide-svelte";
   import {
     checkoutStore,
@@ -19,10 +20,6 @@
   import { track } from "$lib/track/meta";
 
   export let onComplete: () => void;
-
-  let isGeneratingCertificate = false;
-  let certificateReady = false;
-  let certificateUrl = "";
 
   $: ({
     selectedProduct,
@@ -75,6 +72,7 @@
       startDate: el.startDate,
       city: el.city,
       photo: el.photo,
+      theme: el.selectedTheme,
     }));
 
     const request = await fetch(
@@ -92,7 +90,6 @@
           },
           name: customerData.name,
           whatsapp: customerData.whatsapp,
-          cpf: customerData.cpf,
           email: customerData.email,
         }),
       },
@@ -123,179 +120,9 @@
     const data = await res.json();
     if (data.data.status === "approved") {
       stopPaymentWatcher();
-      handleSuccessfulPayment();
-      track("purchase", {
-        value: totalAmount,
-      });
+      setPaymentStatus("paid");
+      track("purchase", { value: totalAmount });
     }
-  }
-
-  let canvas: HTMLCanvasElement;
-  let ctx: CanvasRenderingContext2D;
-
-  const W = 1080;
-  const H = 1920;
-
-  async function draw(
-    couple: string,
-    date: string,
-    city: string,
-    ass: { one: string; two: string },
-    couplePhoto: string | null,
-  ) {
-    ctx = canvas.getContext("2d")!;
-
-    canvas.width = W;
-    canvas.height = H;
-
-    await document.fonts.load('40px "Breathing"');
-    await document.fonts.load('33px "Breathing"');
-    await document.fonts.ready;
-
-    const bg = new Image();
-    bg.src = couplePhoto ? "/input2.png" : "/input.png";
-    await bg.decode();
-
-    ctx.clearRect(0, 0, W, H);
-    ctx.drawImage(bg, 0, 0, W, H);
-
-    if (selectedExtras.find((el) => el.id === "with_photo" && el.selected)) {
-      if (couplePhoto) {
-        const photoConfig = {
-          x: 130,
-          y: 640,
-          w: 300,
-          h: 350,
-          radius: 24,
-        };
-
-        const img = new Image();
-        img.src = couplePhoto;
-        await img.decode();
-
-        ctx.save();
-
-        ctx.beginPath();
-        ctx.roundRect(
-          photoConfig.x,
-          photoConfig.y,
-          photoConfig.w,
-          photoConfig.h,
-          photoConfig.radius,
-        );
-        ctx.clip();
-
-        const imgRatio = img.width / img.height;
-        const canvasRatio = photoConfig.w / photoConfig.h;
-        let drawX, drawY, drawW, drawH;
-
-        if (imgRatio > canvasRatio) {
-          drawH = photoConfig.h;
-          drawW = img.width * (photoConfig.h / img.height);
-          drawX = photoConfig.x + (photoConfig.w - drawW) / 2;
-          drawY = photoConfig.y;
-        } else {
-          drawW = photoConfig.w;
-          drawH = img.height * (photoConfig.w / img.width);
-          drawX = photoConfig.x;
-          drawY = photoConfig.y + (photoConfig.h - drawH) / 2;
-        }
-
-        ctx.drawImage(img, drawX, drawY, drawW, drawH);
-        ctx.restore();
-
-        ctx.fillStyle = "#393939";
-        ctx.textAlign = "center";
-
-        ctx.font = '25px "Breathing"';
-        ctx.fillText(couple, 820, 785);
-
-        ctx.font = '25px "Breathing"';
-        ctx.fillText(date, 860, 855);
-
-        ctx.font = '25px "Breathing"';
-        ctx.fillText(city, 825, 925);
-
-        ctx.font = '33px "Breathing"';
-        ctx.fillText(ass.one, 298, 1550);
-
-        ctx.font = '33px "Breathing"';
-        ctx.fillText(ass.two, 800, 1550);
-      }
-
-      ctx.fillStyle = "#393939";
-      ctx.textAlign = "center";
-
-      ctx.font = '25px "Breathing"';
-      ctx.fillText(couple, 820, 785);
-
-      ctx.font = '25px "Breathing"';
-      ctx.fillText(date, 860, 855);
-
-      ctx.font = '25px "Breathing"';
-      ctx.fillText(city, 825, 925);
-
-      ctx.font = '33px "Breathing"';
-      ctx.fillText(ass.one, 298, 1550);
-
-      ctx.font = '33px "Breathing"';
-      ctx.fillText(ass.two, 800, 1550);
-
-      certificateUrl = getBase64();
-      return;
-    }
-
-    ctx.fillStyle = "#393939";
-    ctx.textAlign = "center";
-
-    ctx.font = '40px "Breathing"';
-    ctx.fillText(couple, 620, 775);
-
-    ctx.font = '33px "Breathing"';
-    ctx.fillText(date, 680, 835);
-
-    ctx.font = '33px "Breathing"';
-    ctx.fillText(city, 580, 905);
-
-    ctx.font = '33px "Breathing"';
-    ctx.fillText(ass.one, 298, 1515);
-
-    ctx.font = '33px "Breathing"';
-    ctx.fillText(ass.two, 775, 1515);
-
-    certificateUrl = getBase64();
-  }
-
-  function getBase64(): string {
-    return canvas.toDataURL("image/png");
-  }
-
-  async function handleSuccessfulPayment() {
-    setPaymentStatus("paid");
-    isGeneratingCertificate = true;
-
-    const { name, startDate, city, photo } = people[0];
-    const names = name
-      .split(/\s+(?:e|&{1,2}|\+|\|)\s+/i)
-      .map((n) => n.trim())
-      .filter(Boolean);
-
-    const one = names[0] ?? "";
-    const two = names[1] ?? "";
-
-    await draw(
-      name,
-      startDate,
-      city,
-      {
-        one,
-        two,
-      },
-      photo,
-    );
-
-    isGeneratingCertificate = false;
-    certificateReady = true;
   }
 
   function copyPixCode() {
@@ -304,34 +131,19 @@
       setTimeout(() => (copySuccess = false), 2000);
     });
   }
-
-  function downloadCertificate() {
-    const link = document.createElement("a");
-    link.href = certificateUrl;
-    link.download = `Certidao_Amor_${people[0]?.name || "Casal"}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
 </script>
-
-<canvas bind:this={canvas} width="1080" height="1920" style="display: none" />
 
 <div class="step-payment">
   <div class="content-wrapper">
     <div class="payment-section">
-      {#if !certificateReady}
+      {#if paymentStatus !== "paid"}
         <div class="section-header">
           <h2>
-            {isGeneratingCertificate
-              ? "Criando a sua surpresa..."
+            {paymentStatus === "generating"
+              ? "Preparando tudo..."
               : "Quase lá, falta pouco!"}
           </h2>
-          <p>
-            {isGeneratingCertificate
-              ? "Eternizando seu sentimento no papel digital."
-              : "Realize o pagamento para liberarmos sua certidão personalizada."}
-          </p>
+          <p>Realize o pagamento para liberarmos sua certidão personalizada.</p>
         </div>
       {/if}
 
@@ -340,7 +152,7 @@
           <div class="heart-loader">
             <Heart size={48} fill="#ff4d6d" color="#ff4d6d" />
           </div>
-          <h3>Preparando seu QR Code...</h3>
+          <h3>Gerando QR Code...</h3>
         </div>
       {:else if paymentStatus === "waiting"}
         <div class="payment-content">
@@ -350,7 +162,6 @@
               Pix Instantâneo
             </div>
             <img src={pixQrCode} alt="QR Code PIX" class="qr-code" />
-
             <div class="pix-code-section">
               <label>Pix Copia e Cola</label>
               <div class="code-container">
@@ -360,11 +171,9 @@
                   on:click={copyPixCode}
                   class:success={copySuccess}
                 >
-                  {#if copySuccess}
-                    <CheckCircle size={18} />
-                  {:else}
-                    <Copy size={18} />
-                  {/if}
+                  {#if copySuccess}<CheckCircle size={18} />{:else}<Copy
+                      size={18}
+                    />{/if}
                   {copySuccess ? "Copiado" : "Copiar"}
                 </button>
               </div>
@@ -397,58 +206,64 @@
             <p>A confirmação acontece em segundos!</p>
           </div>
         </div>
-      {:else if isGeneratingCertificate}
-        <div class="generating-box card">
-          <div class="magic-loader">
-            <Loader2 size={48} class="spin" color="#c9184a" />
-            <Heart
-              size={20}
-              fill="#c9184a"
-              color="#c9184a"
-              class="heart-inside"
-            />
-          </div>
-          <h3>Sua certidão está sendo gerada!</h3>
-          <p>Estamos enviando amor e carinho para os nossos servidores...</p>
-          <div class="progress-bar"><div class="progress-fill"></div></div>
-        </div>
-      {:else if certificateReady}
-        <div class="certificate-ready-section">
-          <div class="success-header text-center mb-6">
-            <div class="icon-circle">
-              <CheckCircle size={40} color="white" />
+      {:else if paymentStatus === "paid"}
+        <div class="success-container animate-in">
+          <div class="success-card card">
+            <div class="icon-header">
+              <CheckCircle size={64} color="#2f855a" strokeWidth={1.5} />
             </div>
-            <h2>Sua Certidão Está Pronta!</h2>
-            <p>Parabéns! Sua história agora está eternizada.</p>
-          </div>
-
-          <div class="certificate-preview card">
-            <img src={certificateUrl} alt="Sua Certidão" class="final-img" />
-          </div>
-
-          <div class="actions-grid mt-6">
-            <button
-              class="btn btn-primary btn-download"
-              on:click={downloadCertificate}
-            >
-              <Download size={20} /> Baixar Certidão Digital
-            </button>
-            <button
-              class="btn btn-outline btn-whatsapp"
-              on:click={() =>
-                window.open(
-                  `https://wa.me/${customerData.whatsapp}?text=Olha+que+lindo+o+que+fiz+para+nós!`,
-                )}
-            >
-              <Share2 size={20} /> Enviar no WhatsApp
-            </button>
-          </div>
-
-          <div class="email-notice mt-4">
-            <p>
-              <Sparkles size={14} /> Também enviamos uma cópia para
-              <strong>{customerData.whatsapp}</strong>
+            <h2>Pagamento Confirmado!</h2>
+            <p class="main-msg">
+              Obrigado por confiar em nós para eternizar esse momento.
             </p>
+
+            <div class="delivery-steps">
+              <div class="delivery-item">
+                <div class="step-icon">
+                  <MessageSquare size={24} color="#25D366" />
+                </div>
+                <div class="step-text">
+                  <strong>Confira seu WhatsApp</strong>
+                  <span
+                    >Enviamos sua certidão agora mesmo para o número <b
+                      >{customerData.whatsapp}</b
+                    >.</span
+                  >
+                </div>
+              </div>
+              <div class="delivery-item">
+                <div class="step-icon"><Mail size={24} color="#c9184a" /></div>
+                <div class="step-text">
+                  <strong>Entrega alternativa por e-mail</strong>
+                  <span>
+                    Caso haja qualquer dificuldade na entrega via WhatsApp,
+                    entraremos em contato e enviaremos o certificado para o
+                    e-mail
+                    <b>{customerData.email}</b>.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="guarantee-box">
+              <div class="guarantee-header">
+                <ShieldCheck size={20} />
+                <span>Garantia de Entrega</span>
+              </div>
+              <p>
+                Fique tranquilo(a)! Nosso sistema garante a entrega do seu
+                produto. Caso ocorra qualquer imprevisto técnico, você conta com
+                <strong>reembolso integral automático</strong>.
+              </p>
+            </div>
+
+            <div class="support-info">
+              <AlertCircle size={16} />
+              <span
+                >Não recebeu? Verifique sua caixa de spam ou entre em contato
+                com nosso suporte.</span
+              >
+            </div>
           </div>
         </div>
       {/if}
@@ -460,7 +275,6 @@
           <Lock size={14} /> Checkout Seguro
         </div>
         <h3>Resumo do Pedido</h3>
-
         <div class="summary-details">
           <div class="item">
             <span class="label">Item:</span>
@@ -471,7 +285,6 @@
             <span class="val">{people[0]?.name || "Personalizado"}</span>
           </div>
         </div>
-
         <div class="summary-divider"></div>
         <div class="summary-total">
           <span>Total:</span>
@@ -485,12 +298,7 @@
 </div>
 
 <style>
-  @font-face {
-    font-family: "Breathing";
-    src: url("/breathing.ttf") format("opentype");
-    font-weight: normal;
-    font-style: normal;
-  }
+  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap");
   .step-payment {
     max-width: 1000px;
     margin: 0 auto;
@@ -510,7 +318,6 @@
   .section-header p {
     color: #8d5b5b;
   }
-
   .loading-state {
     text-align: center;
     padding: 50px 0;
@@ -519,7 +326,6 @@
     animation: heartBeat 1.2s infinite;
     margin-bottom: 20px;
   }
-
   @keyframes heartBeat {
     0%,
     100% {
@@ -529,19 +335,16 @@
       transform: scale(1.2);
     }
   }
-
   .qr-section {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
+    padding: 25px;
     background: white;
     border: 2px solid #fff0f3;
     border-radius: 24px;
     text-align: center;
   }
-
   .badge-pix {
     display: inline-flex;
     align-items: center;
@@ -573,6 +376,7 @@
     border-radius: 12px;
     font-size: 0.85rem;
     color: #8d5b5b;
+    background: #fafafa;
   }
   .copy-btn {
     display: flex;
@@ -589,13 +393,13 @@
   .copy-btn.success {
     background: #2f855a;
   }
-
   .instructions {
     text-align: left;
-    margin-top: 30px;
+    margin-top: 25px;
     background: #fffafa;
     padding: 20px;
     border-radius: 15px;
+    width: 100%;
   }
   .instructions ul {
     list-style: none;
@@ -615,7 +419,6 @@
     left: 0;
     color: #ffccd5;
   }
-
   .status-waiting {
     padding: 20px;
     text-align: center;
@@ -644,122 +447,101 @@
       opacity: 1;
     }
   }
-
-  .generating-box {
-    text-align: center;
-    padding: 60px 40px;
-    background: white;
-    border: 2px dashed #ffccd5;
+  .animate-in {
+    animation: fadeIn 0.8s ease-out;
   }
-  .magic-loader {
-    position: relative;
-    width: fit-content;
-    margin: 0 auto 30px;
-  }
-  .spin {
-    animation: spin 2s linear infinite;
-  }
-  .heart-inside {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 1s infinite;
-  }
-  @keyframes spin {
-    100% {
-      transform: rotate(360deg);
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
     }
-  }
-  .progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #fff0f3;
-    border-radius: 10px;
-    margin-top: 30px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    width: 0%;
-    height: 100%;
-    background: #c9184a;
-    animation: fillProgress 4s forwards linear;
-  }
-  @keyframes fillProgress {
     to {
-      width: 100%;
+      opacity: 1;
+      transform: translateY(0);
     }
   }
-
-  .certificate-ready-section {
-    animation: fadeIn 0.6s ease-out;
+  .success-card {
+    padding: 40px;
+    text-align: center;
+    border: 2px solid #e6fffa;
+    background: #ffffff;
+    border-radius: 30px;
   }
-  .icon-circle {
-    background: #c9184a;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+  .icon-header {
+    margin-bottom: 20px;
+  }
+  .success-card h2 {
+    font-family: "Playfair Display", serif;
+    color: #1a202c;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .main-msg {
+    color: #4a5568;
+    margin-bottom: 30px;
+  }
+  .delivery-steps {
+    display: grid;
+    gap: 20px;
+    text-align: left;
+    margin-bottom: 40px;
+  }
+  .delivery-item {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 15px;
+  }
+  .step-text strong {
+    display: block;
+    color: #2d3748;
+    font-size: 1rem;
+  }
+  .step-text span {
+    font-size: 0.85rem;
+    color: #718096;
+    line-height: 1.4;
+  }
+  .guarantee-box {
+    background: #fff5f5;
+    border: 1px solid #fed7d7;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: left;
+  }
+  .guarantee-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    box-shadow: 0 10px 20px rgba(201, 24, 74, 0.2);
-  }
-  .certificate-preview {
-    position: relative;
-    padding: 10px;
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  }
-  .final-img {
-    width: 100%;
-    border-radius: 8px;
-    display: block;
-  }
-  .preview-overlay {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    color: rgb(255, 0, 0);
-    padding: 5px 15px;
-    border-radius: 50px;
-    font-size: 0.7rem;
-  }
-
-  .actions-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-  .btn-download {
-    background: #c9184a;
-    padding: 20px;
-    border-radius: 50px;
-    font-size: 1.1rem;
-  }
-  .btn-whatsapp {
-    border-color: #25d366;
-    color: #25d366;
-    padding: 20px;
-    border-radius: 50px;
-  }
-  .btn-whatsapp:hover {
-    background: #25d366;
-    color: white;
-  }
-  .email-notice {
-    text-align: center;
-    color: #8d5b5b;
+    gap: 8px;
+    color: #c53030;
+    font-weight: 700;
+    margin-bottom: 8px;
     font-size: 0.9rem;
+    text-transform: uppercase;
   }
-
+  .guarantee-box p {
+    font-size: 0.85rem;
+    color: #742a2a;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .support-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+    color: #a0aec0;
+    font-size: 0.75rem;
+    justify-content: center;
+  }
   .order-summary {
     position: sticky;
     top: 20px;
     padding: 25px;
     background: white;
+    border-radius: 20px;
   }
   .secure-checkout {
     display: flex;
@@ -772,6 +554,7 @@
     background: #f0fff4;
     padding: 6px;
     border-radius: 6px;
+    font-weight: 600;
   }
   .summary-total {
     display: flex;
@@ -784,18 +567,6 @@
     font-size: 1.5rem;
     color: #c9184a;
   }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @media (max-width: 768px) {
     .content-wrapper {
       grid-template-columns: 1fr;
@@ -803,14 +574,14 @@
     .summary-side {
       order: -1;
     }
-    .actions-grid {
-      grid-template-columns: 1fr;
-    }
     .code-container {
       flex-direction: column;
     }
     .copy-btn {
       padding: 15px;
+    }
+    .success-card {
+      padding: 20px;
     }
   }
 </style>

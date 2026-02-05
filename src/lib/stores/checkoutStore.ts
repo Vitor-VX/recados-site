@@ -18,10 +18,15 @@ export interface Extra {
 }
 
 export interface PersonData {
+  name1: string;
+  name2: string;
   name: string;
   startDate: string;
+  cityName: string;
+  stateName: string;
   city: string;
   photo?: string;
+  selectedTheme: string;
 }
 
 export interface CustomerData {
@@ -60,7 +65,6 @@ const initialState: CheckoutState = {
 
 export const checkoutStore = writable<CheckoutState>(initialState);
 
-// Actions
 export const setCurrentStep = (step: number) => {
   checkoutStore.update(state => ({
     ...state,
@@ -70,23 +74,47 @@ export const setCurrentStep = (step: number) => {
 
 export const selectProduct = (product: Product) => {
   checkoutStore.update(state => {
-    const people = Array.from({ length: product.quantity }, () => ({ name: '', startDate: '', city: '' }));
+    const people = Array.from({ length: product.quantity }, () => ({
+      name1: '',
+      name2: '',
+      name: '',
+      startDate: '',
+      cityName: '',
+      stateName: '',
+      city: '',
+      selectedTheme: ''
+    }));
+
+    const extrasTotal = state.selectedExtras.reduce((sum, extra) => sum + (extra.selected ? extra.price : 0), 0);
+
     return {
       ...state,
       selectedProduct: product,
       people,
-      totalAmount: product.price + state.selectedExtras.reduce((sum, extra) => sum + (extra.selected ? extra.price : 0), 0)
+      totalAmount: product.price + extrasTotal
     };
   });
 };
 
 export const toggleExtra = (extraId: string) => {
   checkoutStore.update(state => {
-    const updatedExtras = state.selectedExtras.map(extra =>
-      extra.id === extraId ? { ...extra, selected: !extra.selected } : extra
+    let updatedExtras = state.selectedExtras.map(extra => {
+      if (extra.id === extraId) {
+        return { ...extra, selected: !extra.selected };
+      }
+
+      if (extraId === 'collection' && extra.id === 'with_photo') {
+        return { ...extra, selected: false };
+      }
+
+      return extra;
+    });
+
+    const extrasTotal = updatedExtras.reduce(
+      (sum, extra) => sum + (extra.selected ? extra.price : 0),
+      0
     );
 
-    const extrasTotal = updatedExtras.reduce((sum, extra) => sum + (extra.selected ? extra.price : 0), 0);
     const productPrice = state.selectedProduct?.price || 0;
 
     return {
@@ -97,11 +125,12 @@ export const toggleExtra = (extraId: string) => {
   });
 };
 
-export const updatePersonData = (index: number, personData: PersonData) => {
+
+export const updatePersonData = (index: number, personData: Partial<PersonData>) => {
   checkoutStore.update(state => ({
     ...state,
     people: state.people.map((person, i) =>
-      i === index ? personData : person
+      i === index ? { ...person, ...personData } : person
     )
   }));
 };
@@ -132,32 +161,15 @@ export const resetCheckout = () => {
   checkoutStore.set(initialState);
 };
 
-// Mock products and extras
 export const products: Product[] = [
   {
     id: '1',
     name: '1 Casal',
     description: '1 certidão do amor personalizada',
-    price: 9.90,
+    price: 12.90,
     oldPrice: 29.90,
     quantity: 1
-  },
-  // {
-  //   id: '2',
-  //   name: '2 pessoas',
-  //   description: '2 certidões personalizadas (podem ser para casais diferentes)',
-  //   price: 24.90,
-  //   oldPrice: 49.90,
-  //   quantity: 2
-  // },
-  // {
-  //   id: '3',
-  //   name: '3 pessoas',
-  //   description: '3 certidões personalizadas (podem ser para casais diferentes)',
-  //   price: 34.90,
-  //   oldPrice: 69.90,
-  //   quantity: 3
-  // }
+  }
 ];
 
 export const extras: Extra[] = [
@@ -165,14 +177,21 @@ export const extras: Extra[] = [
     id: 'fast_delivery',
     name: 'Entrega super rápida',
     description: 'Receba em até 10 segundos',
-    price: 2.90,
+    price: 4.90,
     selected: false
   },
   {
     id: 'with_photo',
     name: 'Certificado do Amor Premium (2 em 1)',
     description: 'Receba o certificado com foto do casal e também a versão sem foto.',
-    price: 4.90,
+    price: 6.90,
+    selected: false
+  },
+  {
+    id: 'collection',
+    name: 'Coleção Completa (Todos os Modelos)',
+    description: 'Receba todos os estilos do certificado: Minimalista e Clássico, com e sem foto. São 4 certificados para você escolher o seu favorito.',
+    price: 14.90,
     selected: false
   }
 ];

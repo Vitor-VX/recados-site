@@ -6,7 +6,9 @@
 
   const carrosel = [
     "https://files.botsync.site/CertPreview2.png",
-    "https://pub-d997896d0b944e3f97ade771c4a3aeaf.r2.dev/a74c71a5-ba46-4af7-b566-f258e9179df5.jfif",
+    "https://files.botsync.site/modelos-certificados/certificado_02_com_img.png",
+    "https://files.botsync.site/modelos-certificados/modelo_padrao.jpeg",
+    "https://files.botsync.site/modelos-certificados/certificado_02_sem_img.png"
   ];
 
   let current = 0;
@@ -78,7 +80,7 @@
         <div class="price-container">
           <p class="price-info">
             De <span class="price-old">R$ 29,90</span> por apenas
-            <span class="price">R$ 9,90</span>
+            <span class="price">R$ 12,90</span>
           </p>
         </div>
       </div>

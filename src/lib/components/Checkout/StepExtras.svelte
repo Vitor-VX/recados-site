@@ -4,6 +4,10 @@
   export let onNext: () => void;
 
   $: ({ selectedExtras, totalAmount } = $checkoutStore);
+
+  $: hasFullCollection = selectedExtras.some(
+    (e) => e.id === "collection" && e.selected,
+  );
 </script>
 
 <div class="step-extras">
@@ -14,26 +18,48 @@
 
   <div class="extras-list">
     {#each selectedExtras as extra}
-      <div class="extra-card card">
+      <!-- Verifica se esse extra está incluso na coleção -->
+      {@const includedInCollection =
+        hasFullCollection && extra.id === "with_photo"}
+
+      <div class="extra-card card {includedInCollection ? 'disabled' : ''}">
         <div class="extra-content">
           <div class="extra-info">
-            <h3>{extra.name}</h3>
+            <h3>
+              {extra.name}
+
+              {#if includedInCollection}
+                <span class="included-badge">Incluso na coleção</span>
+              {/if}
+            </h3>
+
             <p>{extra.description}</p>
           </div>
 
           <div class="extra-price">
-            + R$ {extra.price.toFixed(2).replace(".", ",")}
+            {#if includedInCollection}
+              Incluso
+            {:else}
+              + R$ {extra.price.toFixed(2).replace(".", ",")}
+            {/if}
           </div>
         </div>
 
         <label class="extra-checkbox">
           <input
             type="checkbox"
-            checked={extra.selected}
+            checked={includedInCollection || extra.selected}
+            disabled={includedInCollection}
             on:change={() => toggleExtra(extra.id)}
           />
+
           <span class="checkmark"></span>
-          {extra.selected ? "Adicionado" : "Adicionar"}
+
+          {#if includedInCollection}
+            Incluso
+          {:else}
+            {extra.selected ? "Adicionado" : "Adicionar"}
+          {/if}
         </label>
       </div>
     {/each}
@@ -41,10 +67,9 @@
 
   <div class="step-footer">
     <div class="total-amount">
-      <span
-        >Total: <strong>R$ {totalAmount.toFixed(2).replace(".", ",")}</strong
-        ></span
-      >
+      <span>
+        Total: <strong>R$ {totalAmount.toFixed(2).replace(".", ",")}</strong>
+      </span>
     </div>
 
     <button class="btn-continue" on:click={onNext}> Continuar </button>
@@ -52,6 +77,21 @@
 </div>
 
 <style>
+  .disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .included-badge {
+    margin-left: 8px;
+    font-size: 0.75rem;
+    background: #d1fae5;
+    color: #065f46;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
   .btn-continue {
     padding: 10px 20px;
     font-size: 1.1rem;
