@@ -190,6 +190,8 @@
       whatsapp: customerData.whatsapp.replace(/\D/g, ""),
     });
     onNext();
+
+    track("initiate_checkout", { value: totalAmount });
   }
 
   function handleFileUpload(index: number, e: Event) {
