@@ -11,6 +11,8 @@
         Image as ImageIcon,
         Printer,
         Sparkles,
+        MoreVertical,
+        Compass,
     } from "lucide-svelte";
     import { onMount } from "svelte";
     import { fly, fade } from "svelte/transition";
@@ -91,6 +93,29 @@
         </div>
 
         <div class="container">
+            <div class="browser-warning" in:fly={{ y: -20, duration: 600 }}>
+                <div class="warning-header">
+                    <AlertTriangle size={20} />
+                    <span>Ação necessária para baixar</span>
+                </div>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <p>
+                            Toque nos <strong>3 pontos</strong>
+                            <MoreVertical size={16} class="inline-icon" /> no topo
+                            da tela.
+                        </p>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <p>
+                            Clique em <strong>"Abrir no navegador"</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <header class="page-header">
                 <div class="logo">
                     <div class="icon-circle">
@@ -196,10 +221,9 @@
                 <div class="warning-box">
                     <AlertTriangle size={20} />
                     <p>
-                        Atenção: Por questões de privacidade, este arquivo será <strong
+                        Atenção: Este arquivo será <strong
                             >excluído permanentemente</strong
-                        > do nosso servidor em 7 dias. Certifique-se de salvar em
-                        um local seguro.
+                        > em 7 dias. Salve-o em seu dispositivo agora.
                     </p>
                 </div>
             </div>
@@ -225,6 +249,9 @@
         --secondary-love: #c9184a;
         --text-love: #4a0e0e;
         --bg-love: #fff5f5;
+        --warning-bg: #fff3cd;
+        --warning-border: #ffeeba;
+        --warning-text: #856404;
     }
 
     .download-page {
@@ -235,6 +262,70 @@
         padding: 40px 0;
         position: relative;
         overflow-x: hidden;
+    }
+
+    .browser-warning {
+        background: #fff9db;
+        border: 2px solid #ffec99;
+        border-radius: 20px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .warning-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #856404;
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+    }
+
+    .steps-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .step-num {
+        background: var(--secondary-love);
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        flex-shrink: 0;
+    }
+
+    .step p {
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        color: #4a0e0e;
+    }
+
+    .inline-icon {
+        display: inline;
+        vertical-align: middle;
+        background: #f1f3f5;
+        padding: 2px;
+        border-radius: 4px;
     }
 
     .bg-elements {
@@ -494,7 +585,6 @@
         margin-top: 5px;
     }
 
-    /* Loader */
     .loading-screen {
         height: 100vh;
         display: flex;
@@ -519,6 +609,9 @@
     }
 
     @media (max-width: 768px) {
+        .steps-grid {
+            grid-template-columns: 1fr;
+        }
         .product-main {
             grid-template-columns: 1fr;
             text-align: center;
