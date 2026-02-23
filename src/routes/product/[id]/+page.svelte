@@ -53,6 +53,26 @@
             console.error("Erro ao buscar o certificado:", err);
         }
     };
+
+    const downloadFile = async () => {
+        try {
+            const response = await fetch(product.downloadUrl);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = product.name + "." + product.type;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error("Erro ao baixar arquivo:", err);
+            alert("Não foi possível baixar o arquivo. Tente novamente.");
+        }
+    };
 </script>
 
 <svelte:head>
@@ -139,7 +159,7 @@
                         <a
                             href={product.downloadUrl}
                             class="btn-download"
-                            download
+                            on:click|preventDefault={downloadFile}
                         >
                             <Download size={22} />
                             Baixar Meu Certificado
