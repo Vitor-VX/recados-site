@@ -9,11 +9,11 @@
   } from "lucide-svelte";
 
   const reviews = [
-    {
-      img: "https://files.botsync.site/casais/img_04.jpeg",
-      couple: "Luan & Grazi",
-      tag: "Eternizado",
-    },
+    // {
+    //   img: "https://files.botsync.site/casais/img_04.jpeg",
+    //   couple: "Luan & Grazi",
+    //   tag: "Eternizado",
+    // },
     {
       img: "https://files.botsync.site/casais/img_01.jpg",
       couple: "Fernanda & Samuel",
