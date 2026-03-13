@@ -23,6 +23,9 @@
     toggleExtra,
   } from "$lib/stores/checkoutStore";
   import { track } from "$lib/track/meta";
+  import Header from "../Header.svelte";
+  import Steppaymentmethod from "../Steppaymentmethod.svelte";
+  import type { PaymentTheme } from "$lib/components/StepPaymentMethod.svelte";
 
   export let onNext: () => void;
 
@@ -33,6 +36,20 @@
   };
 
   let confirmWhatsapp = false;
+
+  const certidaoAmorTheme: PaymentTheme = {
+    bgPanel: "#fff8f8",
+    colorPrimary: "#ff4d6d",
+    colorOnPrimary: "#ffe4e8",
+    colorAccent: "#e05c73",
+    colorOnAccent: "#ffffff",
+    colorText: "#3d1520",
+    colorMuted: "#a07080",
+    colorBorder: "rgba(224,92,115,.2)",
+    fontDisplay: "'Poppins', serif",
+    fontBody: "'Poppins'",
+    decorIcon: "❤️",
+  };
 
   const themes = [
     {
@@ -204,6 +221,17 @@
     }
   }
 </script>
+
+<svelte:head>
+  <script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+  <link rel="preconnect" href="https://challenges.cloudflare.com" />
+
+  <div class="cf-turnstile" data-sitekey="0x4AAAAAAClFToCVq4RSizP5"></div>
+</svelte:head>
 
 <div class="step-customer">
   <div class="content-wrapper">
@@ -432,6 +460,18 @@
           >Gerar Certidão & Pagar</button
         >
       </div>
+      <!-- <Steppaymentmethod
+        {totalAmount}
+        theme={certidaoAmorTheme}
+        pixDiscount={0}
+        onPix={() => handleSubmit()}
+        onCard={async (data) => {
+          await fetch("/api/payment/card", {
+            method: "POST",
+            body: JSON.stringify(data),
+          });
+        }}
+      /> -->
     </div>
 
     <div class="summary-section">
