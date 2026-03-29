@@ -73,7 +73,7 @@
     </div>
 
     <div class="text-center mt-8">
-      <button class="btn btn-primary btn-large" on:click={onStartCheckout}>
+      <button class="btn btn-primary btn-large" data-track="cta-purchase" on:click={onStartCheckout}>
         Quero criar a minha agora
       </button>
     </div>

@@ -73,7 +73,7 @@
       </div>
 
       <div class="cta-section">
-        <button class="btn btn-primary btn-large" on:click={onStartCheckout}>
+        <button class="btn btn-primary btn-large" data-track="cta-purchase" on:click={onStartCheckout}>
           <HandHeart size={20} />
           Criar Nossa Certidão Agora
         </button>

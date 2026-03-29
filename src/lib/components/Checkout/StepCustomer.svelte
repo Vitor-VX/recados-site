@@ -209,6 +209,7 @@
     onNext();
 
     track("initiate_checkout", { value: totalAmount });
+    (window as any).sendEvent("checkout_start");
   }
 
   function handleFileUpload(index: number, e: Event) {
@@ -221,17 +222,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <script
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-    async
-    defer
-  ></script>
-  <link rel="preconnect" href="https://challenges.cloudflare.com" />
-
-  <div class="cf-turnstile" data-sitekey="0x4AAAAAAClFToCVq4RSizP5"></div>
-</svelte:head>
 
 <div class="step-customer">
   <div class="content-wrapper">
