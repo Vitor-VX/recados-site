@@ -33,6 +33,7 @@ export interface CustomerData {
   name: string;
   whatsapp: string;
   email: string;
+  utm: any;
 }
 
 export interface CheckoutState {

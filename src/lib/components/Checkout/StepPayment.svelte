@@ -91,6 +91,7 @@
           name: customerData.name,
           whatsapp: customerData.whatsapp,
           email: customerData.email,
+          utm: customerData.utm || {}
         }),
       },
     );

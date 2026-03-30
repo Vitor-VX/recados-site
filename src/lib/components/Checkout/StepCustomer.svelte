@@ -26,6 +26,7 @@
   import Header from "../Header.svelte";
   import Steppaymentmethod from "../Steppaymentmethod.svelte";
   import type { PaymentTheme } from "$lib/components/StepPaymentMethod.svelte";
+    import { getUTMs } from "$lib/utils/getUtm";
 
   export let onNext: () => void;
 
@@ -205,11 +206,12 @@
       ...customerData,
       name: sanitizeString(customerData.name),
       whatsapp: customerData.whatsapp.replace(/\D/g, ""),
+      utm: getUTMs() || {}
     });
     onNext();
 
     track("initiate_checkout", { value: totalAmount });
-    (window as any).sendEvent("checkout_start");
+    // (window as any).sendEvent("checkout_start");
   }
 
   function handleFileUpload(index: number, e: Event) {
