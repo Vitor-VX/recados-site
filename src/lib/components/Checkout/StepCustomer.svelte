@@ -26,7 +26,7 @@
   import Header from "../Header.svelte";
   import Steppaymentmethod from "../Steppaymentmethod.svelte";
   import type { PaymentTheme } from "$lib/components/StepPaymentMethod.svelte";
-    import { getUTMs } from "$lib/utils/getUtm";
+  import { getUTMs } from "$lib/utils/getUtm";
 
   export let onNext: () => void;
 
@@ -147,7 +147,42 @@
     return /^[A-Za-zÀ-ÿ]+$/.test(trimmed);
   }
 
-  function handleSubmit() {
+  function getMetaCookies() {
+    const fbp =
+      document.cookie
+        .split(";")
+        .find((c) => c.trim().startsWith("_fbp="))
+        ?.split("=")[1] ?? null;
+    const fbc =
+      document.cookie
+        .split(";")
+        .find((c) => c.trim().startsWith("_fbc="))
+        ?.split("=")[1] ||
+      (getUTMs().utm_source?.includes("fb")
+        ? `fb.1.${Date.now()}.${getUTMs().utm_content}`
+        : null);
+    return { fbp, fbc };
+  }
+
+  async function getClientIp(timeout = 800) {
+    try {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+
+      const res = await fetch("https://api.ipify.org?format=json", {
+        signal: controller.signal,
+      });
+
+      clearTimeout(id);
+
+      const data = await res.json();
+      return data.ip;
+    } catch {
+      return null;
+    }
+  }
+
+  async function handleSubmit() {
     if (!customerData.email || !customerData.name || !customerData.whatsapp) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
@@ -202,16 +237,24 @@
       });
     });
 
+    const { fbc, fbp } = getMetaCookies();
+    const clientIp = await getClientIp();
+    const agent = navigator.userAgent;
+
     updateCustomerData({
       ...customerData,
       name: sanitizeString(customerData.name),
       whatsapp: customerData.whatsapp.replace(/\D/g, ""),
-      utm: getUTMs() || {}
+      utm: getUTMs() || {},
+      ip: clientIp,
+      fbc,
+      fbp,
+      userAgent: agent,
     });
     onNext();
 
     track("initiate_checkout", { value: totalAmount });
-    // (window as any).sendEvent("checkout_start");
+    (window as any).sendEvent("checkout_start");
   }
 
   function handleFileUpload(index: number, e: Event) {

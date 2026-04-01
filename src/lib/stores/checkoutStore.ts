@@ -34,6 +34,10 @@ export interface CustomerData {
   whatsapp: string;
   email: string;
   utm: any;
+  userAgent: string;  
+  ip?: string;
+  fbc?: string | null;
+  fbp?: string | null;
 }
 
 export interface CheckoutState {

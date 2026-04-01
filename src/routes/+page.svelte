@@ -96,14 +96,14 @@
     src="https://www.googletagmanager.com/gtag/js?id=G-SHQ596VRV3"
   ></script>
 
-  <script
+  <!-- <script
     src="https://cdn.utmify.com.br/scripts/utms/latest.js"
     data-utmify-prevent-xcod-sck
     data-utmify-prevent-subids
     async
     defer
   >
-  </script>
+  </script> -->
 
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -115,14 +115,14 @@
     gtag("config", "G-SHQ596VRV3");
   </script>
 
-  <script>
+  <!-- <script>
     window.pixelId = "69caa47c3fb09f47453be998";
     var a = document.createElement("script");
     a.setAttribute("async", "");
     a.setAttribute("defer", "");
     a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
     document.head.appendChild(a);
-  </script>
+  </script> -->
 </svelte:head>
 
 {#if !showCheckout}

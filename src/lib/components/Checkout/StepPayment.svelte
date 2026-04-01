@@ -91,9 +91,13 @@
           name: customerData.name,
           whatsapp: customerData.whatsapp,
           email: customerData.email,
-          utm: customerData.utm || {}
+          utm: customerData.utm || {},
+          userAgent: customerData.userAgent,
+          clientIp: customerData.ip,
+          fbc: customerData.fbc ?? "",
+          fbp: customerData.fbp ?? "",
         }),
-      },
+      }
     );
 
     const response = await request.json();
@@ -144,7 +148,7 @@
               ? "Preparando tudo..."
               : "Quase lá, falta pouco!"}
           </h2>
-          <p>Realize o pagamento para liberarmos sua certidão personalizada.</p>
+          <p>Realize o pagamento para liberarmos sua certidão personalizada..</p>
         </div>
       {/if}
 
