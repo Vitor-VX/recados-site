@@ -32,7 +32,7 @@
     const getPage = async () => {
         try {
             const request = await fetch(
-                `https://vxsoftware.space/api/v1/offers/certificate/slug/${id}`,
+                `https://vitordeveloper.sbs/api/v1/offers/certificate/slug/${id}`,
             );
             const response = await request.json();
 

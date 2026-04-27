@@ -76,7 +76,7 @@
     }));
 
     const request = await fetch(
-      "https://vxsoftware.space/api/v1/offers/certificate/orders/create",
+      "https://vitordeveloper.sbs/api/v1/offers/certificate/orders/create",
       {
         method: "POST",
         headers: {
@@ -114,7 +114,7 @@
     if (!token) return;
 
     const res = await fetch(
-      "https://vxsoftware.space/api/v1/offers/certificate/orders/current",
+      "https://vitordeveloper.sbs/api/v1/offers/certificate/orders/current",
       {
         headers: {
           Authorization: `Bearer ${token}`,
