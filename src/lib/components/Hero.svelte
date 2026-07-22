@@ -32,7 +32,7 @@
 <section class="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="badge">Eternize seu sentimento</div>
+      <div class="badge">Eternize</div>
 
       <h1 class="hero-title">
         <span class="title-icon">
