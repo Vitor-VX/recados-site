@@ -35,8 +35,7 @@
         </div>
         <h3>Su amor, en buenas manos</h3>
         <p>
-          Pagamento via Pix com processamento criptografado e garantia de
-          entrega imediata.
+          Pago seguro con procesamiento encriptado y entrega inmediata garantizada.
         </p>
       </div>
     </div>
