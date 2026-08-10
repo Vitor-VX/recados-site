@@ -149,8 +149,6 @@
       <div class="container">
         <!--<StepIndicator {currentStep} />-->
 
-        {console.log("Current Step:", currentStep)}
-
         {#if currentStep === 0}
           <StepOrder onNext={nextStep} />
         {:else if currentStep === 1}
