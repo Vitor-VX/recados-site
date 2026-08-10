@@ -63,7 +63,7 @@
     export let totalAmount: number;
     export let onPix: () => void;
     export let onCard: (formData: CardFormData) => void;
-    export let currency = "R$";
+    export let currency = "US$";
     export let pixDiscount = 0;
     export let publicKey: string = PUBLIC_MERCADO_PAGO_KEY ?? "";
 

@@ -5,7 +5,7 @@
 <section class="benefits">
   <div class="container">
     <h2 class="text-center section-title" style="">
-      Por que escolher nosso Certificado do Amor?
+      ¿Qué hace único a nuestro Certificado de Amor?
     </h2>
 
     <div class="grid grid-3">
@@ -15,8 +15,8 @@
         </div>
         <h3>100% Personalizado</h3>
         <p>
-          Cada certificado é criado com o nome do casal, a data especial e a
-          cidade/estado informados por você.
+          Cada certificado se personaliza con los nombres de la pareja, su fecha especial y el lugar que nos indiques.
+
         </p>
       </div>
 
@@ -24,18 +24,16 @@
         <div class="benefit-icon icon-pink">
           <MessageSquare size={40} />
         </div>
-        <h3>Entrega Instantânea</h3>
+        <h3>Entrega inmediata</h3>
         <p>
-          Receba sua certidão digital poucos minutos após a confirmação, direto
-          no seu <strong>WhatsApp</strong>.
-        </p>
+          Recibe tu certificado digital por <strong>WhatsApp y correo electrónico</strong> en pocos minutos, una vez confirmado el pago.
       </div>
 
       <div class="benefit-card card">
         <div class="benefit-icon icon-gold">
           <Shield size={40} />
         </div>
-        <h3>Amor com Segurança</h3>
+        <h3>Su amor, en buenas manos</h3>
         <p>
           Pagamento via Pix com processamento criptografado e garantia de
           entrega imediata.

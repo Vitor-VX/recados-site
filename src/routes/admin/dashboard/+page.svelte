@@ -31,7 +31,7 @@
 
       <StatCard
         title="Valor total faturado"
-        value="R$ {$dashboardStats.totalRevenue.toFixed(2).replace('.', ',')}"
+        value="US$ {$dashboardStats.totalRevenue.toFixed(2).replace('.', ',')}"
         description="Receita total"
         icon={DollarSign}
         color="#10b981"
@@ -39,7 +39,7 @@
 
       <StatCard
         title="Ticket médio geral"
-        value="R$ {$dashboardStats.averageTicket.toFixed(2).replace('.', ',')}"
+        value="US$ {$dashboardStats.averageTicket.toFixed(2).replace('.', ',')}"
         description="Valor médio por pedido"
         icon={BarChart3}
         color="#f59e0b"
@@ -47,7 +47,7 @@
 
       <StatCard
         title="Ticket médio de pedidos pagos"
-        value="R$ {$dashboardStats.paidAverageTicket
+        value="US$ {$dashboardStats.paidAverageTicket
           .toFixed(2)
           .replace('.', ',')}"
         description="Valor médio dos pagos"

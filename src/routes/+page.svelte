@@ -20,12 +20,14 @@
 
   let showCheckout = false;
   let viewContentTracked = false;
+  // let currentStep = 2;
 
-  $: ({ currentStep } = $checkoutStore);
+  $: currentStep = $checkoutStore.currentStep;
+  //$: currentStep = 2
 
   function startCheckout() {
     showCheckout = true;
-    setCurrentStep(0);
+    setCurrentStep(2);
 
     if (!viewContentTracked && typeof fbq !== "undefined") {
       track("view_content");
@@ -132,20 +134,22 @@
   <Benefits />
   <HowItWorks onStartCheckout={startCheckout} />
 {:else}
-  <!-- Checkout Flow -->
+  <!-- Checkout Flow Hidden -->
   <div class="checkout-container">
     <div class="checkout-header">
       <div class="container">
         <a href="/" class="back-link" on:click={() => (showCheckout = false)}>
-          ← Voltar para página inicial
+          ← Volver al inicio
         </a>
-        <h1>Finalizar pedido</h1>
+        <h1>Finalizar compra</h1>
       </div>
     </div>
 
     <div class="checkout-content">
       <div class="container">
-        <StepIndicator {currentStep} />
+        <!--<StepIndicator {currentStep} />-->
+
+        {console.log("Current Step:", currentStep)}
 
         {#if currentStep === 0}
           <StepOrder onNext={nextStep} />
@@ -153,7 +157,7 @@
           <StepExtras onNext={nextStep} />
         {:else if currentStep === 2}
           <StepCustomer onNext={nextStep} />
-        {:else if currentStep === 3}
+        {:else}
           <StepPayment onComplete={completeCheckout} />
         {/if}
       </div>
@@ -189,6 +193,20 @@
     color: #2d3748;
     margin: 0;
     font-size: 1.8rem;
+  }
+
+  .checkout-placeholder {
+    padding: 60px;
+    border-radius: 24px;
+    background: #edf9f1;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    text-align: center;
+  }
+
+  .checkout-placeholder__note {
+    margin-top: 12px;
+    color: #047857;
   }
 
   .checkout-content {

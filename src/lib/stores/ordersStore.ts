@@ -48,7 +48,7 @@ const mockOrders: Order[] = [
       { name: 'Pedro', message: 'Papai Noel chegou!' }
     ],
     extras: [
-      { name: 'Entrega super rápida', price: 5.90 }
+      { name: 'Entrega exprés', price: 5.90 }
     ],
     totalAmount: 20.80,
     status: 'pending',

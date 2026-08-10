@@ -7,10 +7,10 @@
 
 <div class="step-order">
   <div class="step-header">
-    <h2>Escolha a dose de amor ideal</h2>
+    <h2>Elige la dosis perfecta de amor</h2>
     <p>
-      Cada certidão é única e pode ser personalizada individualmente para o seu
-      momento especial.
+      Cada certificado es único y se personaliza de forma individual para celebrar ese momento especial.
+
     </p>
   </div>
 
@@ -27,11 +27,11 @@
         <div class="pricing">
           {#if product.oldPrice}
             <span class="price-old"
-              >De R$ {product.oldPrice.toFixed(2).replace(".", ",")}</span
+              >De US$ {product.oldPrice.toFixed(2).replace(".", ",")}</span
             >
           {/if}
           <div class="price-wrapper">
-            <span class="currency">R$</span>
+            <span class="currency">US$</span>
             <span class="price"
               >{product.price.toFixed(2).replace(".", ",")}</span
             >
@@ -45,7 +45,7 @@
             onNext();
           }}
         >
-          Selecionar esta opção.
+          Seleccionar
         </button>
       </div>
     {/each}

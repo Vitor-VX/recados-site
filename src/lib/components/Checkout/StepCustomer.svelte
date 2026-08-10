@@ -27,6 +27,7 @@
   import Steppaymentmethod from "../Steppaymentmethod.svelte";
   import type { PaymentTheme } from "$lib/components/StepPaymentMethod.svelte";
   import { getUTMs } from "$lib/utils/getUtm";
+  import { goto } from "$app/navigation";
 
   export let onNext: () => void;
 
@@ -37,6 +38,7 @@
   };
 
   let confirmWhatsapp = false;
+  let selectedTheme = "";
 
   const certidaoAmorTheme: PaymentTheme = {
     bgPanel: "#fff8f8",
@@ -55,26 +57,26 @@
   const themes = [
     {
       id: "minimalist",
-      name: "Amor Minimalista",
+      name: "Amor minimalista",
       withPhoto: {
         preview:
           "https://files.botsync.site/modelos-certificados/certificado_02_com_img.png",
       },
       withoutPhoto: {
         preview:
-          "https://files.botsync.site/modelos-certificados/certificado_02_sem_img.png",
+          "https://i.postimg.cc/XYskvSt7/1.png",
       },
     },
     {
       id: "vintage",
-      name: "Clássico Vintage",
+      name: "Clásico vintage",
       withPhoto: {
         preview:
           "https://files.botsync.site/modelos-certificados/certificado_01_com_img.png",
       },
       withoutPhoto: {
         preview:
-          "https://files.botsync.site/modelos-certificados/modelo_padrao.jpeg",
+          "https://i.postimg.cc/m2cdJrnS/4.png",
       },
     },
   ];
@@ -102,10 +104,14 @@
   }
 
   function handleThemeSelect(index: number, theme: any) {
+  selectedTheme = theme.id;
+
+  if (people[index]) {
     updatePersonData(index, {
       selectedTheme: theme.id,
     });
   }
+}
 
   function sanitizeString(str: string) {
     if (!str) return "";
@@ -266,194 +272,200 @@
       reader.readAsDataURL(target.files[0]);
     }
   }
+
+  console.log($checkoutStore);
 </script>
 
 <div class="step-customer">
   <div class="content-wrapper">
     <div class="form-section">
       <div class="section-header">
-        <h2>Personalize seu Amor</h2>
-        <p>Preencha os dados que aparecerão na sua certidão especial</p>
+        <h2>Personaliza tu historia de amor</h2>
+        <p>Completa los datos que aparecerán en tu Certificado de Amor</p>
       </div>
 
       <div class="people-section">
         <h3 class="romantic-title">
-          <Heart size={20} fill="currentColor" /> Dados da Certidão
+          <Heart size={20} fill="currentColor" /> Datos del certificado
         </h3>
         {#each people as person, index}
-          <div class="person-form card">
-            <div class="person-header">
-              <span class="badge">Casal {index + 1}</span>
-            </div>
 
-            <div class="form-group">
-              <label><User size={18} /> Nomes do Casal</label>
-              <div class="form-row">
-                <input
-                  type="text"
-                  placeholder="exemplo: João"
-                  value={person.name1 || ""}
-                  on:input={(e) =>
-                    handlePersonUpdate(index, "name1", e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="exemplo: Maria"
-                  value={person.name2 || ""}
-                  on:input={(e) =>
-                    handlePersonUpdate(index, "name2", e.target.value)}
-                />
-              </div>
-            </div>
+        <div class="person-form card">
+          <div class="person-header">
+            <span class="badge">Pareja {index + 1}</span>
+          </div>
 
+          <div class="form-group">
+            <label><User size={18} /> Nombres de la pareja</label>
             <div class="form-row">
-              <div class="form-group">
-                <label><Calendar size={18} /> Data do início</label>
-                <input
-                  type="text"
-                  maxlength="10"
-                  value={person.startDate || ""}
-                  placeholder="DD/MM/AAAA"
-                  on:input={(e) =>
-                    handlePersonUpdate(index, "startDate", e.target.value)}
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Ejemplo: Juan"
+                value={person.name1}
+                on:input={(e) => handlePersonUpdate(index, "name1", e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Ejemplo: María"
+                value={person.name2}
+                on:input={(e) => handlePersonUpdate(index, "name2", e.target.value)}
+              />
+            </div>
+          </div>
 
-              <div class="form-group">
-                <label><MapPin size={18} /> Localidade</label>
-                <div class="location-grid">
-                  <input
-                    type="text"
-                    value={person.cityName || ""}
-                    placeholder="Cidade"
-                    on:input={(e) =>
-                      handlePersonUpdate(index, "cityName", e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    maxlength="2"
-                    value={person.stateName || ""}
-                    placeholder="UF"
-                    on:input={(e) =>
-                      handlePersonUpdate(index, "stateName", e.target.value)}
-                  />
-                </div>
-              </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label><Calendar size={18} /> Fecha de inicio</label>
+              <input
+                type="text"
+                maxlength="10"
+                value={person.startDate}
+                placeholder="DD/MM/AAAA"
+                on:input={(e) => handlePersonUpdate(index, "startDate", e.target.value)}
+              />
             </div>
 
             <div class="form-group">
-              <label><Layout size={18} /> Escolha o Estilo do Pacote</label>
-              <div class="themes-grid">
-                {#if displayMode === "collection"}
+              <label><MapPin size={18} /> Lugar</label>
+              <div class="location-grid">
+                <input
+                  type="text"
+                  value={person.cityName}
+                  placeholder="Ubicación"
+                  on:input={(e) => handlePersonUpdate(index, "cityName", e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><Layout size={18} /> Elige el estilo de tu paquete</label>
+
+            <div class="themes-grid">
+              {#if displayMode === "collection"}
+                <button
+                  type="button"
+                  class="theme-option selected collection-card"
+                >
+                  <div class="cards-stack">
+                    <div class="stack-card quaternary">
+                      <img src={themes[0].withoutPhoto.preview} alt="" />
+                    </div>
+
+                    <div class="stack-card tertiary">
+                      <img src={themes[0].withPhoto.preview} alt="" />
+                    </div>
+
+                    <div class="stack-card secondary">
+                      <img src={themes[1].withoutPhoto.preview} alt="" />
+                    </div>
+
+                    <div class="stack-card main">
+                      <img src={themes[1].withPhoto.preview} alt="" />
+                    </div>
+
+                    <div class="model-check">
+                      <CheckCircle2
+                        size={28}
+                        fill="#c9184a"
+                        color="white"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="theme-label">
+                    <span class="name">Colección completa</span>
+                    <span class="bundle-tag">
+                      Incluye 4 certificados
+                    </span>
+                  </div>
+                </button>
+              {:else}
+                {#each themes as theme}
                   <button
                     type="button"
-                    class="theme-option selected collection-card"
+                    class="theme-option"
+                    class:selected={selectedTheme === theme.id}
+                    on:click={() => handleThemeSelect(0, theme)}
                   >
                     <div class="cards-stack">
-                      <div class="stack-card quaternary">
-                        <img src={themes[0].withoutPhoto.preview} alt="" />
-                      </div>
-                      <div class="stack-card tertiary">
-                        <img src={themes[0].withPhoto.preview} alt="" />
-                      </div>
-                      <div class="stack-card secondary">
-                        <img src={themes[1].withoutPhoto.preview} alt="" />
-                      </div>
-                      <div class="stack-card main">
-                        <img src={themes[1].withPhoto.preview} alt="" />
-                      </div>
-                      <div class="model-check">
-                        <CheckCircle2 size={28} fill="#c9184a" color="white" />
-                      </div>
+                      {#if displayMode === "two"}
+                        <div class="stack-card secondary">
+                          <img src={theme.withoutPhoto.preview} alt="" />
+                        </div>
+
+                        <div class="stack-card main">
+                          <img src={theme.withPhoto.preview} alt="" />
+                        </div>
+                      {:else}
+                        <div class="stack-card main-single">
+                          <img src={theme.withoutPhoto.preview} alt="" />
+                        </div>
+                      {/if}
+
+                      {#if selectedTheme === theme.id}
+                        <div class="model-check">
+                          <CheckCircle2
+                            size={28}
+                            fill="#c9184a"
+                            color="white"
+                          />
+                        </div>
+                      {/if}
                     </div>
+
                     <div class="theme-label">
-                      <span class="name">Coleção Completa</span>
-                      <span class="bundle-tag">4 Certificados Inclusos</span>
+                      <span class="name">{theme.name}</span>
+                      {#if hasPhotoExtra}
+                        <span class="bundle-tag">
+                          Pacote 2 em 1
+                        </span>
+                      {/if}
                     </div>
                   </button>
-                {:else}
-                  {#each themes as theme}
+                {/each}
+              {/if}
+            </div>
+          </div>
+
+            <div class="form-group upload-group">
+              <label><Camera size={18} /> Foto de la pareja</label>
+              <div class="photo-upload-container">
+                {#if person.photo}
+                  <div class="photo-preview">
+                    <img src={person.photo} alt="Preview" />
                     <button
-                      type="button"
-                      class="theme-option"
-                      class:selected={person.selectedTheme === theme.id}
-                      on:click={() => handleThemeSelect(index, theme)}
+                      class="remove-photo"
+                      on:click={() => handlePersonUpdate(index, "photo", "")}
                     >
-                      <div class="cards-stack">
-                        {#if displayMode === "two"}
-                          <div class="stack-card secondary">
-                            <img src={theme.withoutPhoto.preview} alt="" />
-                          </div>
-                          <div class="stack-card main">
-                            <img src={theme.withPhoto.preview} alt="" />
-                          </div>
-                        {:else}
-                          <div class="stack-card main-single">
-                            <img src={theme.withoutPhoto.preview} alt="" />
-                          </div>
-                        {/if}
-                        {#if person.selectedTheme === theme.id}
-                          <div class="model-check">
-                            <CheckCircle2
-                              size={28}
-                              fill="#c9184a"
-                              color="white"
-                            />
-                          </div>
-                        {/if}
-                      </div>
-                      <div class="theme-label">
-                        <span class="name">{theme.name}</span>
-                        {#if hasPhotoExtra}
-                          <span class="bundle-tag">Pacote 2 em 1</span>
-                        {/if}
-                      </div>
+                      ×
                     </button>
-                  {/each}
+                  </div>
+                {:else}
+                  <label class="file-input-label">
+                    <ImageIcon size={32} />
+                    <span>Sube la foto de la pareja</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      on:change={(e) => handleFileUpload(index, e)}
+                    />
+                  </label>
                 {/if}
               </div>
             </div>
-
-            {#if isWithPhoto}
-              <div class="form-group upload-group">
-                <label
-                  ><Camera size={18} /> Foto do Casal (Necessária para o plano selecionado)</label
-                >
-                <div class="photo-upload-container">
-                  {#if person.photo}
-                    <div class="photo-preview">
-                      <img src={person.photo} alt="Preview" />
-                      <button
-                        class="remove-photo"
-                        on:click={() => handlePersonUpdate(index, "photo", "")}
-                        >×</button
-                      >
-                    </div>
-                  {:else}
-                    <label class="file-input-label">
-                      <ImageIcon size={32} />
-                      <span>Upload da foto do casal</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        on:change={(e) => handleFileUpload(index, e)}
-                      />
-                    </label>
-                  {/if}
-                </div>
-              </div>
-            {/if}
-          </div>
-        {/each}
+        </div>
+      {/each}
       </div>
 
-      <div class="customer-section">
-        <h3 class="romantic-title"><Mail size={20} /> Informações de Envio</h3>
+      <!--
+<div class="customer-section">
+        <h3 class="romantic-title"><Mail size={20} /> Datos de entrega</h3>
         <div class="form-group">
-          <label><User size={18} /> Seu Nome Completo</label>
+          <label><User size={18} /> Tu nombre completo</label>
           <input
             type="text"
-            placeholder="Seu nome completo"
+            placeholder="Tu nombre completo"
             bind:value={customerData.name}
           />
         </div>
@@ -462,17 +474,17 @@
             <label><Phone size={18} /> WhatsApp</label>
             <input
               type="text"
-              placeholder="(00) 00000-0000"
+              placeholder="+00 000 000 0000"
               value={customerData.whatsapp}
               on:input={(e) =>
                 (customerData.whatsapp = formatPhone(e.target.value))}
             />
           </div>
           <div class="form-group">
-            <label><Mail size={18} /> E-mail</label>
+            <label><Mail size={18} /> Correo electrónico</label>
             <input
               type="email"
-              placeholder="seu@email.com"
+              placeholder="tu@correo.com"
               bind:value={customerData.email}
             />
           </div>
@@ -484,15 +496,21 @@
               {#if confirmWhatsapp}<Check size={14} strokeWidth={4} />{/if}
             </div>
             <span
-              >Confirmo que meu WhatsApp está correto para receber o arquivo.</span
-            >
+              >Confirmo que mi número de WhatsApp es correcto para recibir el
+              archivo.
+            </span>
           </label>
         </div>
-      </div>
+      </div>      
+      
+      -->
 
       <div class="form-actions">
-        <button class="btn btn-compra btn-large" on:click={handleSubmit}
-          >Gerar Certidão & Pagar</button
+        <button
+          class="btn btn-compra btn-large"
+          on:click={() => {
+            window.location.href = "https://pay.hotmart.com/J107067474X?checkoutMode=10";
+          }}>Crear mi certificado y pagar</button
         >
       </div>
       <!-- <Steppaymentmethod
@@ -511,32 +529,30 @@
 
     <div class="summary-section">
       <div class="order-summary card">
-        <h3>Resumo do Presente</h3>
+        <h3>Resumen de tu regalo</h3>
         <div class="summary-item">
-          <span class="label">Pacote:</span><span class="value"
-            >{selectedProduct?.name}</span
+          <span class="label">Paquete:</span><span class="value"
+            >Certificado de pareja</span
           >
         </div>
-        <div class="summary-item">
-          <span class="label">Certidão Digital:</span><span class="value"
-            >R$ {selectedProduct?.price.toFixed(2).replace(".", ",")}</span
+        <!--<div class="summary-item">
+          <span class="label">Certificado digital:</span><span class="value"
+            >US$ {selectedProduct?.price.toFixed(2).replace(".", ",")}</span
           >
-        </div>
+        </div>-->
         {#each selectedExtras.filter((e) => e.selected) as extra}
           <div class="summary-item extra">
             <span class="label">{extra.name}:</span><span class="value"
-              >+ R$ {extra.price.toFixed(2).replace(".", ",")}</span
+              >+ US$ {extra.price.toFixed(2).replace(".", ",")}</span
             >
           </div>
         {/each}
         <div class="summary-divider"></div>
         <div class="summary-total">
-          <span class="label">Total:</span><span class="value"
-            >R$ {totalAmount.toFixed(2).replace(".", ",")}</span
-          >
+          <span class="label">Total:</span><span class="value">US$ 3,90</span>
         </div>
         <div class="secure-badge">
-          <Check size={14} /> Pagamento 100% Seguro
+          <Check size={14} /> Pago 100% seguro
         </div>
       </div>
     </div>

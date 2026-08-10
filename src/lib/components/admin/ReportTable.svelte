@@ -28,11 +28,11 @@
   }
 
   function formatCurrency(value: number) {
-    return `R$ ${value.toFixed(2).replace(".", ",")}`;
+    return `US$ ${value.toFixed(2).replace(".", ",")}`;
   }
 
   function getAverageTicket(revenue: number, paidOrders: number) {
-    if (paidOrders === 0) return "R$ 0,00";
+    if (paidOrders === 0) return "US$ 0,00";
     return formatCurrency(revenue / paidOrders);
   }
 </script>

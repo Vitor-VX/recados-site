@@ -82,7 +82,7 @@
           {getStatusText(order.status)}
         </span>
         <span class="amount"
-          >R$ {order.totalAmount.toFixed(2).replace(".", ",")}</span
+          >US$ {order.totalAmount.toFixed(2).replace(".", ",")}</span
         >
         <span class="date">{order.createdAt.toLocaleDateString("pt-BR")}</span>
       </div>
@@ -141,13 +141,13 @@
               <strong>Extras:</strong>
               {#each order.extras as extra}
                 <div class="extra-item">
-                  {extra.name} (+R$ {extra.price.toFixed(2).replace(".", ",")})
+                  {extra.name} (+US$ {extra.price.toFixed(2).replace(".", ",")})
                 </div>
               {/each}
             </div>
           {/if}
           <div class="detail-item">
-            <strong>Valor total:</strong> R$ {order.totalAmount
+            <strong>Valor total:</strong> US$ {order.totalAmount
               .toFixed(2)
               .replace(".", ",")}
           </div>
