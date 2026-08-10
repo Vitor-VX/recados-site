@@ -5,10 +5,11 @@
   export let onStartCheckout: () => void;
 
   const carrosel = [
-    "https://files.botsync.site/CertPreview2.png",
-    "https://files.botsync.site/modelos-certificados/certificado_02_com_img.png",
-    "https://files.botsync.site/modelos-certificados/modelo_padrao.jpeg",
-    "https://files.botsync.site/modelos-certificados/certificado_02_sem_img.png"
+    // img principal
+    "https://i.postimg.cc/m2cdJrnS/4.png",
+    "https://i.postimg.cc/7hrgRxJj/5.png",
+    "https://i.postimg.cc/XYskvSt7/1.png",
+    "https://i.postimg.cc/5985CFZ1/2.png"
   ];
 
   let current = 0;
@@ -32,21 +33,21 @@
 <section class="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="badge">Eternize</div>
+      <div class="badge">Haz eterno lo que sientes</div>
 
       <h1 class="hero-title">
         <span class="title-icon">
           <Heart size={40} fill="currentColor" />
         </span>
-        Sua Certidão de Namoro
+        Tu Certificado de Noviazgo
         <span class="title-icon">
           <Heart size={40} fill="currentColor" />
         </span>
       </h1>
 
       <p class="hero-subtitle">
-        Transforme sua história em um documento oficial do coração. Um presente
-        único, emocionante e eterno para o seu grande amor.
+        Convierte su historia de amor en un recuerdo para siempre.
+        Un detalle único y emocionante para la persona más especial de tu vida.
       </p>
 
       <div class="video-preview">
@@ -55,7 +56,7 @@
             {#each carrosel as image, i}
               <img
                 src={image}
-                alt="Prévia da Certidão"
+                alt="Vista previa del certificado"
                 class:active={i === current}
               />
             {/each}
@@ -75,12 +76,12 @@
       <div class="cta-section">
         <button class="btn btn-primary btn-large" data-track="cta-purchase" on:click={onStartCheckout}>
           <HandHeart size={20} />
-          Criar Nossa Certidão Agora
+          Crea su Certificado de Noviazgo ahora
         </button>
         <div class="price-container">
           <p class="price-info">
-            De <span class="price-old">R$ 29,90</span> por apenas
-            <span class="price">R$ 12,90</span>
+            De <span class="price-old">US$ 12.90</span> por solo
+            <span class="price">US$ 3.90</span>
           </p>
         </div>
       </div>

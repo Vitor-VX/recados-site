@@ -10,23 +10,23 @@
   const packages = [
     {
       id: "minimalist",
-      name: "Pacote Minimalista",
-      description: "Design moderno com foco na tipografia e elegância.",
-      tag: "Mais Escolhido",
+      name: "Paquete Minimalista",
+      description: "Diseño moderno, tipografía elegante y un estilo sofisticado.",
+      tag: "¡El más elegido!",
       mainImg:
-        "https://files.botsync.site/modelos-certificados/certificado_02_sem_img.png",
+        "https://i.postimg.cc/XYskvSt7/1.png",
       premiumImg:
-        "https://files.botsync.site/modelos-certificados/certificado_02_com_img.png",
+        "https://i.postimg.cc/5985CFZ1/2.png",
     },
     {
       id: "classic",
-      name: "Pacote Vintage",
-      description: "Estilo vintage que remete às certidões tradicionais.",
+      name: "Paquete vintage",
+      description: "Diseño vintage inspirado en los certificados tradicionales.",
       tag: "Elegante",
       mainImg:
-        "https://files.botsync.site/modelos-certificados/modelo_padrao.jpeg",
+        "https://i.postimg.cc/m2cdJrnS/4.png",
       premiumImg:
-        "https://files.botsync.site/modelos-certificados/certificado_01_com_img.png",
+        "https://i.postimg.cc/7hrgRxJj/5.png",
     },
   ];
 
@@ -42,13 +42,13 @@
     <div class="text-center mb-8">
       <div class="badge-mini">
         <Sparkles size={14} fill="currentColor" />
-        <span>Design & Estilo</span>
+        <span>Diseño y estilo</span>
       </div>
-      <h2 class="section-title">Escolha seu Modelo</h2>
+      <h2 class="section-title">Elige tu diseño</h2>
       <p class="subtitle">
-        O plano padrão inclui a versão <strong>Sem Foto</strong>. Ao garantir o
-        Certificado do Amor Premium, você também recebe a versão com
-        <strong>Foto do Casal</strong>.
+        El plan estándar incluye el certificado <strong>Sin Foto</strong>. Al elegir el Certificado
+        de Amor Premium, también recibes una versión personalizada con la
+        <strong>foto de la pareja</strong>.
       </p>
     </div>
 
@@ -70,10 +70,10 @@
             >
               {#if activePackage === pack.id}
                 <X size={14} />
-                <span>Fechar</span>
+                <span>Cerrar</span>
               {:else}
                 <MousePointerClick size={14} />
-                <span>Ver os dois</span>
+                <span>Ver las dos versiones</span>
               {/if}
             </div>
           </div>
@@ -83,13 +83,13 @@
             <div class="card-item premium">
               <img src={pack.premiumImg} alt="Versão Com Foto" />
               <div class="label-premium">
-                <Sparkles size={10} fill="white" /> Versão com Foto
+                <Sparkles size={10} fill="white" /> Versión con foto
               </div>
             </div>
 
             <div class="card-item standard">
               <img src={pack.mainImg} alt="Versão Padrão" />
-              <div class="label-standard">Versão Padrão (Sem Foto)</div>
+              <div class="label-standard">Versión estándar (sin foto)</div>
             </div>
           </div>
 
@@ -101,11 +101,11 @@
             <div class="features">
               <div class="feature">
                 <CheckCircle2 size={16} color="#c9184a" />
-                <span>Alta Definição</span>
+                <span>Alta definición</span>
               </div>
               <div class="feature">
                 <CheckCircle2 size={16} color="#c9184a" />
-                <span>Pronto para Imprimir</span>
+                <span>Listo para imprimir</span>
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@
     <div class="footer-stats">
       <div class="stat">
         <Layout size={20} />
-        <span>Designs exclusivos e autorais</span>
+        <span>Diseños exclusivos y originales</span>
       </div>
     </div>
   </div>

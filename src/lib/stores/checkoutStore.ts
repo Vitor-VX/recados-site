@@ -34,7 +34,7 @@ export interface CustomerData {
   whatsapp: string;
   email: string;
   utm: any;
-  userAgent: string;  
+  userAgent: string;
   ip?: string;
   fbc?: string | null;
   fbp?: string | null;
@@ -53,10 +53,21 @@ export interface CheckoutState {
 }
 
 const initialState: CheckoutState = {
-  currentStep: 0,
+  currentStep: 2,
   selectedProduct: null,
   selectedExtras: [],
-  people: [],
+  people: [
+    {
+      name1: '',
+      name2: '',
+      name: '',
+      startDate: '',
+      cityName: '',
+      stateName: '',
+      city: '',
+      selectedTheme: ''
+    }
+  ],
   customerData: {
     name: '',
     whatsapp: '',
@@ -168,11 +179,11 @@ export const resetCheckout = () => {
 
 export const products: Product[] = [
   {
-    id: '1',
-    name: '1 Casal',
-    description: '1 certidão do amor personalizada',
-    price: 12.90,
-    oldPrice: 29.90,
+    id: '1 pareja',
+    name: '',
+    description: 'Un certificado de amor personalizado',
+    price: 3.90,
+    oldPrice: 12.90,
     quantity: 1
   }
 ];
@@ -180,23 +191,23 @@ export const products: Product[] = [
 export const extras: Extra[] = [
   {
     id: 'fast_delivery',
-    name: 'Entrega super rápida',
-    description: 'Receba em até 10 segundos',
-    price: 4.90,
+    name: 'Entrega exprés',
+    description: 'Recíbelo en solo 10 segundos',
+    price: 1.99,
     selected: false
   },
   {
     id: 'with_photo',
-    name: 'Certificado do Amor Premium (2 em 1)',
-    description: 'Receba o certificado com foto do casal e também a versão sem foto.',
-    price: 6.90,
+    name: 'Certificado de Amor Premium (2 en 1)',
+    description: 'Recibe dos versiones de tu certificado: una con la foto de la pareja y otra sin foto.',
+    price: 2.99,
     selected: false
   },
   {
     id: 'collection',
-    name: 'Coleção Completa (Todos os Modelos)',
-    description: 'Receba todos os estilos do certificado: Minimalista e Clássico, com e sem foto. São 4 certificados para você escolher o seu favorito.',
-    price: 14.90,
+    name: 'Colección completa (Todos los diseños)',
+    description: 'Recibe la colección completa en dos estilos, Minimalista y Clásico, cada uno con y sin foto. En total, tendrás 4 certificados para elegir tu favorito.',
+    price: 4.90,
     selected: false
   }
 ];

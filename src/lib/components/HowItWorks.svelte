@@ -6,7 +6,7 @@
 
 <section class="how-it-works">
   <div class="container">
-    <h2 class="text-center section-title">Passo a passo para a surpresa</h2>
+    <h2 class="text-center section-title">Tu sorpresa, paso a paso</h2>
 
     <div class="steps">
       <div class="step">
@@ -17,10 +17,9 @@
         <div class="step-icon">
           <ShoppingBag size={32} color="#ff4d6d" />
         </div>
-        <h3>Escolha o pacote</h3>
+        <h3>Elige tu paquete</h3>
         <p>
-          Selecione quantos certificados do amor você deseja criar para
-          presentear.
+          Elige cuántos Certificados de Amor quieres crear para regalar.
         </p>
       </div>
 
@@ -34,10 +33,10 @@
         <div class="step-icon">
           <Edit3 size={32} color="#ff4d6d" />
         </div>
-        <h3>Personalize tudo</h3>
+        <h3>Personaliza cada detalle</h3>
         <p>
-          Informe o nome do casal, a data de início do relacionamento e a
-          cidade/estado onde moram.
+          Indica los nombres de la pareja, la fecha en que comenzó su relación y el lugar donde viven.
+
         </p>
       </div>
 
@@ -51,8 +50,8 @@
         <div class="step-icon">
           <DollarSign size={32} color="#ff4d6d" />
         </div>
-        <h3>Pagamento Pix</h3>
-        <p>Finalize com Pix de forma instantânea e totalmente segura.</p>
+        <h3>Pago seguro</h3>
+        <p>Completa tu compra de forma rápida y totalmente segura.</p>
       </div>
 
       <div class="step-connector"></div>
@@ -65,16 +64,17 @@
         <div class="step-icon">
           <Send size={32} color="#ff4d6d" />
         </div>
-        <h3>Receba o Amor</h3>
+        <h3>Recibe tu certificado</h3>
         <p>
-          Sua certidão digital chega direto no seu WhatsApp em poucos minutos.
+          Recibe tu certificado digital por WhatsApp y correo electrónico en cuestión de minutos.
+
         </p>
       </div>
     </div>
 
     <div class="text-center mt-8">
       <button class="btn btn-primary btn-large" data-track="cta-purchase" on:click={onStartCheckout}>
-        Quero criar a minha agora
+        Quiero crear mi certificado ahora
       </button>
     </div>
   </div>

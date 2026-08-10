@@ -15,18 +15,28 @@
     //   tag: "Eternizado",
     // },
     {
-      img: "https://files.botsync.site/casais/img_01.jpg",
-      couple: "Fernanda & Samuel",
+      img: "https://i.postimg.cc/fbKysDPc/Whats-App-Image-2026-08-08-at-22-47-01.jpg",
+      couple: "Sofía & Mateo",
       tag: "Presente Surpresa",
     },
     {
-      img: "https://files.botsync.site/casais/img_03.jpeg",
-      couple: "Gustavo & Ana",
+      img: "https://i.postimg.cc/zvLGTWGM/Whats-App-Image-2026-08-08-at-22-47-01-(1).jpg",
+      couple: "Valentina & Santiago",
       tag: "Presente Surpresa",
     },
     {
-      img: "https://files.botsync.site/casais/img_05.jpeg",
-      couple: "Tati & Lucas",
+      img: "https://i.postimg.cc/76tLCXwn/Whats-App-Image-2026-08-08-at-22-47-01-(2).jpg",
+      couple: "Lucía & Alejandro",
+      tag: "Pedido de Namoro",
+    },
+    {
+      img: "https://i.postimg.cc/HkrwX0sG/Whats-App-Image-2026-08-09-at-18-29-43.jpg",
+      couple: "Juan e Valeria",
+      tag: "Pedido de Namoro",
+    },
+    {
+      img: "https://i.postimg.cc/Y2VYkGzC/Whats-App-Image-2026-08-09-at-18-43-52.jpg",
+      couple: "Emiliano & Mariana",
       tag: "Pedido de Namoro",
     },
   ];
@@ -47,11 +57,11 @@
     <div class="text-center mb-8">
       <div class="badge-mini">
         <Heart size={14} fill="currentColor" />
-        <span>Social Proof</span>
+        <span>Lo que dicen nuestros clientes</span>
       </div>
-      <h2 class="section-title">Quem já viveu esse amor</h2>
+      <h2 class="section-title">Parejas que ya lo hicieron oficial</h2>
       <p class="subtitle">
-        Veja como ficaram os certificados de alguns de nossos casais apaixonados
+        Mira cómo quedaron los certificados de algunas de nuestras parejas
       </p>
     </div>
 
@@ -64,7 +74,7 @@
         {#each reviews as review}
           <div class="proof-card">
             <div class="image-container">
-              <img src={review.img} alt="Certificado do casal" />
+              <img src={review.img} alt="Certificado de Pareja" />
               <div class="overlay">
                 <!-- <span class="tag">{review.tag}</span> -->
               </div>
@@ -80,7 +90,7 @@
               <h3>{review.couple}</h3>
               <div class="verified">
                 <CheckCircle2 size={14} />
-                <span>Certificado Enviado</span>
+                <span>¡Certificado enviado!</span>
               </div>
             </div>
           </div>
@@ -95,12 +105,12 @@
     <div class="footer-stats">
       <div class="stat">
         <MessageSquare size={20} />
-        <span>Envio direto no WhatsApp</span>
+        <span>Recíbelo directamente en tu WhatsApp y correo electrónico</span>
       </div>
       <div class="divider-dot"></div>
       <div class="stat">
         <CheckCircle2 size={20} />
-        <span>Satisfação Garantida</span>
+        <span>Satisfacción garantizada</span>
       </div>
     </div>
   </div>

@@ -3,10 +3,10 @@
   export let currentStep: number;
   
   const steps = [
-    'Pedido',
+    /*'Pedido',
     'Extras', 
-    'Dados',
-    'Pagamento'
+    'Datos',*/
+    'Pago'
   ];
 </script>
 

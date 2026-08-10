@@ -30,7 +30,7 @@
     paymentStatus,
     pixCode,
     pixQrCode,
-  } = $checkoutStore);
+  } = $checkoutStore);  
 
   let copySuccess = false;
 
@@ -196,7 +196,7 @@
                 </li>
                 <li>
                   Valor exato: <span class="highlight"
-                    >R$ {totalAmount.toFixed(2).replace(".", ",")}</span
+                    >US$ {totalAmount.toFixed(2).replace(".", ",")}</span
                   >.
                 </li>
               </ul>
@@ -294,7 +294,7 @@
         <div class="summary-total">
           <span>Total:</span>
           <span class="total-price"
-            >R$ {totalAmount.toFixed(2).replace(".", ",")}</span
+            >US$ {totalAmount.toFixed(2).replace(".", ",")}</span
           >
         </div>
       </div>

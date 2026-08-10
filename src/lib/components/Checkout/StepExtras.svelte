@@ -12,8 +12,8 @@
 
 <div class="step-extras">
   <div class="step-header">
-    <h2>Deixe o dia ainda mais especial</h2>
-    <p>Adicione extras opcionais ao seu pedido</p>
+    <h2>Haz que ese día sea aún más especial</h2>
+    <p>Personaliza tu pedido con estos extras opcionales</p>
   </div>
 
   <div class="extras-list">
@@ -29,7 +29,7 @@
               {extra.name}
 
               {#if includedInCollection}
-                <span class="included-badge">Incluso na coleção</span>
+                <span class="included-badge">Incluido en la colección</span>
               {/if}
             </h3>
 
@@ -40,7 +40,7 @@
             {#if includedInCollection}
               Incluso
             {:else}
-              + R$ {extra.price.toFixed(2).replace(".", ",")}
+              + US$ {extra.price.toFixed(2).replace(".", ",")}
             {/if}
           </div>
         </div>
@@ -58,7 +58,7 @@
           {#if includedInCollection}
             Incluso
           {:else}
-            {extra.selected ? "Adicionado" : "Adicionar"}
+            {extra.selected ? "Agregado" : "Agregar"}
           {/if}
         </label>
       </div>
@@ -68,7 +68,7 @@
   <div class="step-footer">
     <div class="total-amount">
       <span>
-        Total: <strong>R$ {totalAmount.toFixed(2).replace(".", ",")}</strong>
+        Total: <strong>US$ {totalAmount.toFixed(2).replace(".", ",")}</strong>
       </span>
     </div>
 
